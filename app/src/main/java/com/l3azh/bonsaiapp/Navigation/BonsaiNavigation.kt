@@ -14,7 +14,9 @@ import com.l3azh.bonsaiapp.View.SplashScreen
 enum class BonsaiNavigationTag(nameScreen:String){
     SplashScreen("SplashScreen"),
     LoginScreen("LoginScreen"),
-    RegisterScreen("RegisterScreen")
+    RegisterScreen("RegisterScreen"),
+    AdminMainMenuScreen("AdminMainMenuScreen"),
+    UserMainMenuScreen("UserMainMenuScreen")
 }
 
 @Composable
