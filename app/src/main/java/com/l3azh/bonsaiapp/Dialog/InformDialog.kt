@@ -31,12 +31,13 @@ fun InformDialog(
     nameNegativeButton: String = "Cancel",
     onPositiveClick: (MutableState<Boolean>) -> Unit = {},
     onNegativeClick: (MutableState<Boolean>) -> Unit = {},
+    onTapOutSideDialog: (MutableState<Boolean>) -> Unit = {}
 ) {
     val openDialog = rememberSaveable {
         mutableStateOf(show)
     }
     if (openDialog.value) {
-        Dialog(onDismissRequest = { openDialog.value = false }) {
+        Dialog(onDismissRequest = { onTapOutSideDialog(openDialog) }) {
             Card(
                 shape = RoundedCornerShape(10),
                 backgroundColor = transparent90

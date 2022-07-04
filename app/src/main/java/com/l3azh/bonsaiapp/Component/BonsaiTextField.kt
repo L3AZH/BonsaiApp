@@ -8,6 +8,8 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 
@@ -26,7 +28,9 @@ fun BonsaiTextField(
         leadingIcon = icon,
         label = label,
         modifier = modifier,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        visualTransformation = if (keyboardType == KeyboardType.Password)
+            PasswordVisualTransformation() else VisualTransformation.None
     )
 }
 

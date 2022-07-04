@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -17,14 +18,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.l3azh.bonsaiapp.Component.InfoAccountComponent
 import com.l3azh.bonsaiapp.Component.ItemMenuComponent
-import com.l3azh.bonsaiapp.R
+import com.l3azh.bonsaiapp.ViewModel.AdminMainMenuViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 import com.l3azh.bonsaiapp.ui.theme.Green
-import com.l3azh.bonsaiapp.ui.theme.GreenLight
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AdminMainScreen(
+    adminMainMenuViewModel: AdminMainMenuViewModel,
     navHostController: NavHostController? = null,
     modifier: Modifier = Modifier
 ) {
@@ -55,16 +56,16 @@ fun AdminMainScreen(
                     modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
                     onImageUpdate = {})
                 LazyVerticalGrid(cells = GridCells.Fixed(2), modifier = Modifier.padding(32.dp)) {
-                    items(4) {
+                    items(items = adminMainMenuViewModel.state.value.listItem, itemContent = { item ->
                         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
                             ItemMenuComponent(
-                                name = "Test",
-                                color = GreenLight,
-                                icon = R.drawable.ic_bs_user,
+                                name = item.title,
+                                color = item.color,
+                                icon = item.icon,
                                 modifier = Modifier.align(Alignment.Center)
                             )
                         }
-                    }
+                    })
                 }
             }
         }
@@ -75,6 +76,7 @@ fun AdminMainScreen(
 @Preview
 fun PreviewAdminMainScreen() {
     BonsaiAppTheme {
-        AdminMainScreen()
+        val adminMainMenuViewModel = AdminMainMenuViewModel()
+        AdminMainScreen(adminMainMenuViewModel)
     }
 }

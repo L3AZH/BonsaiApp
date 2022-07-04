@@ -30,7 +30,7 @@ fun LoadMoreItemThumbnailComponent() {
                     verticalArrangement = Arrangement.Center
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_bs_user),
+                        painter = painterResource(id = R.drawable.ic_bs_loadmore),
                         contentDescription = "Tree Pic",
                         modifier = Modifier
                             .size(80.dp)

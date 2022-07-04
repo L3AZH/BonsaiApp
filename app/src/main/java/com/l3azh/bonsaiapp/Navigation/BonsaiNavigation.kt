@@ -11,7 +11,7 @@ import com.l3azh.bonsaiapp.View.LoginScreen
 import com.l3azh.bonsaiapp.View.RegisterScreen
 import com.l3azh.bonsaiapp.View.SplashScreen
 
-enum class BonsaiNavigationTag(nameScreen:String){
+enum class BonsaiNavigationTag(nameScreen: String) {
     SplashScreen("SplashScreen"),
     LoginScreen("LoginScreen"),
     RegisterScreen("RegisterScreen"),
@@ -23,23 +23,23 @@ enum class BonsaiNavigationTag(nameScreen:String){
 fun BonsaiNavHost(
     navHostController: NavHostController,
     modifier: Modifier
-){
+) {
     val context = LocalContext.current
     NavHost(
         navController = navHostController,
         startDestination = BonsaiNavigationTag.SplashScreen.name
-    ){
-        composable(BonsaiNavigationTag.SplashScreen.name){
+    ) {
+        composable(BonsaiNavigationTag.SplashScreen.name) {
             SplashScreen(navHostController)
         }
-        composable(BonsaiNavigationTag.LoginScreen.name){
+        composable(BonsaiNavigationTag.LoginScreen.name) {
             LoginScreen(
                 navHostController,
                 (context as MainActivity).loginViewModel
             )
         }
-        composable(BonsaiNavigationTag.RegisterScreen.name){
-            RegisterScreen(navHostController)
+        composable(BonsaiNavigationTag.RegisterScreen.name) {
+            RegisterScreen((context as MainActivity).registerViewModel, navHostController)
         }
     }
 }

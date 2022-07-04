@@ -53,14 +53,8 @@ fun LoginScreen(
                 title = "Error",
                 message = loginViewModel.state.value.errorMessage.value,
                 positiveButtonEnable = true,
-                negativeButtonEnable = true,
-                namePositiveButton = "test",
-                nameNegativeButton = "test2",
+                namePositiveButton = "OK",
                 onPositiveClick = {dialogState ->
-                    dialogState.value = false
-                    loginViewModel.state.value.onError.value = false
-                },
-                onNegativeClick = {dialogState ->
                     dialogState.value = false
                     loginViewModel.state.value.onError.value = false
                 }

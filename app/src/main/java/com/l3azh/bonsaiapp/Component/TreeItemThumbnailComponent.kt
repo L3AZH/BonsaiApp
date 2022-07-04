@@ -41,7 +41,7 @@ fun TreeThumbnailComponent(
                 ) {
                     if (picture == null) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_bs_user),
+                            painter = painterResource(id = R.drawable.ic_bs_tree_black),
                             contentDescription = "Tree Pic",
                             modifier = Modifier
                                 .size(80.dp)

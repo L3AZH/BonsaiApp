@@ -1,9 +1,16 @@
 package com.l3azh.bonsaiapp.Util
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.icu.text.SimpleDateFormat
+import android.os.Build
 import android.util.Base64
+import androidx.annotation.RequiresApi
 import com.l3azh.bonsaiapp.BuildConfig
 import com.l3azh.bonsaiapp.Constant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.util.*
 
 class BonsaiAppUtils {
     companion object {
@@ -20,6 +27,13 @@ class BonsaiAppUtils {
             val editer = pref.edit()
             editer.putString(Constant.TOKEN_FIELD, token)
             editer.apply()
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getCurrentDateString(): String {
+            val df = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+            return df.format(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))
         }
     }
 }

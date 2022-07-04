@@ -10,9 +10,9 @@ import com.l3azh.bonsaiapp.R
 import com.l3azh.bonsaiapp.View.UserMainScreen
 
 enum class BonsaiBottomNavigationTag(val nameScreen: String, val title: String, val icon: Int) {
-    UserMainScreen("UserMainScreen", "Main", R.drawable.ic_bs_user),
-    UserSearchScreen("UserSearchScreen", "Search", R.drawable.ic_bs_user),
-    UserCartScreen("UerCartScreen", "Cart", R.drawable.ic_bs_user);
+    UserMainScreen("UserMainScreen", "Main", R.drawable.ic_bs_home),
+    UserSearchScreen("UserSearchScreen", "Search", R.drawable.ic_bs_search),
+    UserCartScreen("UerCartScreen", "Cart", R.drawable.ic_bs_shopping_cart);
 
 
     fun getTitleValue(): String {
