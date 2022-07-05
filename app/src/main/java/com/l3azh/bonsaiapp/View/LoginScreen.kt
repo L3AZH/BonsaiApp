@@ -20,12 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.l3azh.bonsaiapp.Component.BonsaiTextField
+import com.l3azh.bonsaiapp.Constant
 import com.l3azh.bonsaiapp.Dialog.InformDialog
 import com.l3azh.bonsaiapp.Dialog.LoadingDialog
 import com.l3azh.bonsaiapp.MainActivity
 import com.l3azh.bonsaiapp.Navigation.BonsaiNavigationTag
 import com.l3azh.bonsaiapp.R
-import com.l3azh.bonsaiapp.Util.BonsaiAppUtils
+import com.l3azh.bonsaiapp.Util.SharePrefUtils
 import com.l3azh.bonsaiapp.ViewModel.LoginViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 import com.l3azh.bonsaiapp.ui.theme.Green
@@ -128,8 +129,22 @@ fun LoginScreen(
                         loginViewModel.login(
                             email = loginViewModel.state.value.email.value,
                             password = loginViewModel.state.value.password.value,
-                            onLoginSuccess = { token ->
-                                BonsaiAppUtils.saveTokenToPref(context, token)
+                            onLoginSuccess = { token, email, role ->
+                                SharePrefUtils.saveTokenToPref(context, token)
+                                SharePrefUtils.saveEmailToPref(context, email)
+                                SharePrefUtils.saveRoleToPref(context, role)
+                                if (Constant.USER_ROLE.equals(role)){
+                                    navHostController!!.navigate(BonsaiNavigationTag.AdminMainMenuScreen.name){
+                                        navHostController.popBackStack()
+                                    }
+                                    /*navHostController!!.navigate(BonsaiNavigationTag.UserMainMenuScreen.name){
+                                        navHostController.popBackStack()
+                                    }*/
+                                } else {
+                                    navHostController!!.navigate(BonsaiNavigationTag.AdminMainMenuScreen.name){
+                                        navHostController.popBackStack()
+                                    }
+                                }
                             }
                         )
                     },

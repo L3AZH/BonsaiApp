@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.l3azh.bonsaiapp.Component.InfoAccountComponent
 import com.l3azh.bonsaiapp.Component.ItemMenuComponent
+import com.l3azh.bonsaiapp.Dialog.InformDialog
+import com.l3azh.bonsaiapp.Dialog.LoadingDialog
+import com.l3azh.bonsaiapp.MainActivity
 import com.l3azh.bonsaiapp.ViewModel.AdminMainMenuViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 import com.l3azh.bonsaiapp.ui.theme.Green
@@ -46,15 +50,34 @@ fun AdminMainScreen(
         Box(
             modifier = Modifier.fillMaxSize(1f)
         ) {
+            LoadingDialog(
+                show = adminMainMenuViewModel.state.value.isLoading.value
+            )
+            if(adminMainMenuViewModel.state.value.onError.value){
+                InformDialog(
+                    show = true,
+                    title = "Error",
+                    message = adminMainMenuViewModel.state.value.errorMessage.value,
+                    positiveButtonEnable = true,
+                    namePositiveButton = "OK",
+                    onPositiveClick = {dialogState ->
+                        dialogState.value = false
+                        adminMainMenuViewModel.state.value.onError.value = false
+                    }
+                )
+            }
             Column(
                 modifier = Modifier.fillMaxSize(1f)
             ) {
                 InfoAccountComponent(
-                    name = "test",
-                    email = "asd@gmail.com",
-                    role = "USER",
+                    name = adminMainMenuViewModel.state.value.accountInfo.value.lastName,
+                    email = adminMainMenuViewModel.state.value.accountInfo.value.email,
+                    role = adminMainMenuViewModel.state.value.accountInfo.value.role,
+                    avatar = adminMainMenuViewModel.state.value.accountInfo.value.avatar,
                     modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
-                    onImageUpdate = {})
+                    onImageUpdate = {
+
+                    })
                 LazyVerticalGrid(cells = GridCells.Fixed(2), modifier = Modifier.padding(32.dp)) {
                     items(items = adminMainMenuViewModel.state.value.listItem, itemContent = { item ->
                         Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
@@ -76,7 +99,7 @@ fun AdminMainScreen(
 @Preview
 fun PreviewAdminMainScreen() {
     BonsaiAppTheme {
-        val adminMainMenuViewModel = AdminMainMenuViewModel()
-        AdminMainScreen(adminMainMenuViewModel)
+        val context = LocalContext.current
+        AdminMainScreen((context as MainActivity).adminMainMenuViewModel)
     }
 }

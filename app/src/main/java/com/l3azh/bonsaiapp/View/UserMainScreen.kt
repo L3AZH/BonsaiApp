@@ -14,18 +14,18 @@ import com.l3azh.bonsaiapp.Component.TreeTypeThumbnailComponent
 @Composable
 fun UserMainScreen(){
     Box(modifier = Modifier.fillMaxSize(1f)) {
-        Column(modifier = Modifier
-            .fillMaxSize(1f)) {
-            InfoAccountComponent(
-                name = "test",
-                email = "asd@gmail.com",
-                role = "USER",
-                modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
-                onImageUpdate = {})
-            LazyColumn{
-                items(5){
-                    TreeTypeThumbnailComponent(name = "testasdsacas")
-                }
+        LazyColumn(modifier = Modifier
+            .fillMaxSize(1f),){
+            item {
+                InfoAccountComponent(
+                    name = "test",
+                    email = "asd@gmail.com",
+                    role = "USER",
+                    modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
+                    onImageUpdate = {})
+            }
+            items(5){
+                TreeTypeThumbnailComponent(name = "testasdsacas")
             }
         }
     }

@@ -7,9 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.l3azh.bonsaiapp.MainActivity
-import com.l3azh.bonsaiapp.View.LoginScreen
-import com.l3azh.bonsaiapp.View.RegisterScreen
-import com.l3azh.bonsaiapp.View.SplashScreen
+import com.l3azh.bonsaiapp.View.*
 
 enum class BonsaiNavigationTag(nameScreen: String) {
     SplashScreen("SplashScreen"),
@@ -40,6 +38,12 @@ fun BonsaiNavHost(
         }
         composable(BonsaiNavigationTag.RegisterScreen.name) {
             RegisterScreen((context as MainActivity).registerViewModel, navHostController)
+        }
+        composable(BonsaiNavigationTag.UserMainMenuScreen.name){
+            UserMainMenuScreen()
+        }
+        composable(BonsaiNavigationTag.AdminMainMenuScreen.name){
+            AdminMainScreen((context as MainActivity).adminMainMenuViewModel, navHostController)
         }
     }
 }

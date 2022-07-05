@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.l3azh.bonsaiapp.Navigation.BonsaiNavHost
+import com.l3azh.bonsaiapp.ViewModel.AdminMainMenuViewModel
 import com.l3azh.bonsaiapp.ViewModel.LoginViewModel
 import com.l3azh.bonsaiapp.ViewModel.RegisterViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
 
     val loginViewModel:LoginViewModel by viewModels()
     val registerViewModel:RegisterViewModel by viewModels()
+    val adminMainMenuViewModel:AdminMainMenuViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

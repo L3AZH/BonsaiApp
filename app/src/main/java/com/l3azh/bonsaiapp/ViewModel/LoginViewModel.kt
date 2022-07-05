@@ -28,7 +28,7 @@ class LoginViewModel @Inject constructor(
 
     var state = mutableStateOf(LoginState())
 
-    fun login(email: String, password: String, onLoginSuccess: (String) -> Unit) =
+    fun login(email: String, password: String, onLoginSuccess: (String, String, String) -> Unit) =
         CoroutineScope(Dispatchers.IO).launch {
             CoroutineScope(Dispatchers.Main).launch {
                 state.value.isLoading.value = true
@@ -39,7 +39,10 @@ class LoginViewModel @Inject constructor(
                     CoroutineScope(Dispatchers.Main).launch {
                         state.value.isLoading.value = false
                         state.value.onError.value = false
-                        onLoginSuccess(bonsaiResponse.data.token)
+                        onLoginSuccess(
+                            bonsaiResponse.data.token,
+                            bonsaiResponse.data.accInfo.email,
+                            bonsaiResponse.data.accInfo.role)
                     }
                 },
                 onError = { bonsaiErrorResponse ->

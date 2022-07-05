@@ -9,7 +9,7 @@ import com.l3azh.bonsaiapp.Api.Response.SignUpResponse
 import com.l3azh.bonsaiapp.Util.BonsaiAppUtils
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor(val bonsaiApi: BonsaiApi) {
+class AuthRepository @Inject constructor(private val bonsaiApi: BonsaiApi) {
 
     suspend fun login(
         request: LoginRequest,
