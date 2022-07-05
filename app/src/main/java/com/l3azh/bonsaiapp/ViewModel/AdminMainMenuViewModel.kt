@@ -63,7 +63,8 @@ class AdminMainMenuViewModel @Inject constructor(
                         infoAccountResponse.data.lastName,
                         infoAccountResponse.data.phoneNumber,
                         infoAccountResponse.data.role,
-                        BonsaiAppUtils.getBitmapFromStringData(infoAccountResponse.data.avatar)
+                        if (infoAccountResponse.data.avatar.isEmpty()) null else
+                            BonsaiAppUtils.getBitmapFromStringData(infoAccountResponse.data.avatar)
                     )
                 }
             }, onError = { bonsaiErrorResponse->

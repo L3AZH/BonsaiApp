@@ -14,7 +14,10 @@ enum class BonsaiNavigationTag(nameScreen: String) {
     LoginScreen("LoginScreen"),
     RegisterScreen("RegisterScreen"),
     AdminMainMenuScreen("AdminMainMenuScreen"),
-    UserMainMenuScreen("UserMainMenuScreen")
+    UserMainMenuScreen("UserMainMenuScreen"),
+    AdminTreeTypeScreen("AdminTreeTypeScreen"),
+    AdminTreeScreen("AdminTreeScreen"),
+    AdminBillScreen("AdminBillScreen")
 }
 
 @Composable
@@ -39,11 +42,20 @@ fun BonsaiNavHost(
         composable(BonsaiNavigationTag.RegisterScreen.name) {
             RegisterScreen((context as MainActivity).registerViewModel, navHostController)
         }
-        composable(BonsaiNavigationTag.UserMainMenuScreen.name){
+        composable(BonsaiNavigationTag.UserMainMenuScreen.name) {
             UserMainMenuScreen()
         }
-        composable(BonsaiNavigationTag.AdminMainMenuScreen.name){
+        composable(BonsaiNavigationTag.AdminMainMenuScreen.name) {
             AdminMainScreen((context as MainActivity).adminMainMenuViewModel, navHostController)
+        }
+        composable(BonsaiNavigationTag.AdminTreeTypeScreen.name) {
+            AdminTreeTypeScreen((context as MainActivity).adminTreeTypeViewModel, navHostController)
+        }
+        composable(BonsaiNavigationTag.AdminTreeScreen.name) {
+
+        }
+        composable(BonsaiNavigationTag.AdminBillScreen.name) {
+
         }
     }
 }

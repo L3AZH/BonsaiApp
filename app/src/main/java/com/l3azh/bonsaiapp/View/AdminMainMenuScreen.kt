@@ -1,6 +1,7 @@
 package com.l3azh.bonsaiapp.View
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -9,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +24,8 @@ import com.l3azh.bonsaiapp.Component.ItemMenuComponent
 import com.l3azh.bonsaiapp.Dialog.InformDialog
 import com.l3azh.bonsaiapp.Dialog.LoadingDialog
 import com.l3azh.bonsaiapp.MainActivity
+import com.l3azh.bonsaiapp.Navigation.BonsaiNavigationTag
+import com.l3azh.bonsaiapp.Util.SharePrefUtils
 import com.l3azh.bonsaiapp.ViewModel.AdminMainMenuViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 import com.l3azh.bonsaiapp.ui.theme.Green
@@ -33,6 +37,7 @@ fun AdminMainScreen(
     navHostController: NavHostController? = null,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Scaffold(
         modifier = Modifier.fillMaxSize(1f),
         topBar = {
@@ -53,14 +58,14 @@ fun AdminMainScreen(
             LoadingDialog(
                 show = adminMainMenuViewModel.state.value.isLoading.value
             )
-            if(adminMainMenuViewModel.state.value.onError.value){
+            if (adminMainMenuViewModel.state.value.onError.value) {
                 InformDialog(
                     show = true,
                     title = "Error",
                     message = adminMainMenuViewModel.state.value.errorMessage.value,
                     positiveButtonEnable = true,
                     namePositiveButton = "OK",
-                    onPositiveClick = {dialogState ->
+                    onPositiveClick = { dialogState ->
                         dialogState.value = false
                         adminMainMenuViewModel.state.value.onError.value = false
                     }
@@ -78,20 +83,42 @@ fun AdminMainScreen(
                     onImageUpdate = {
 
                     })
-                LazyVerticalGrid(cells = GridCells.Fixed(2), modifier = Modifier.padding(32.dp)) {
-                    items(items = adminMainMenuViewModel.state.value.listItem, itemContent = { item ->
-                        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
-                            ItemMenuComponent(
-                                name = item.title,
-                                color = item.color,
-                                icon = item.icon,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
-                    })
+                LazyVerticalGrid(
+                    cells = GridCells.Fixed(2),
+                    modifier = Modifier.padding(32.dp)
+                ) {
+                    items(
+                        items = adminMainMenuViewModel.state.value.listItem,
+                        itemContent = { item ->
+                            Box(
+                                modifier = Modifier.weight(1f),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                ItemMenuComponent(
+                                    name = item.title,
+                                    color = item.color,
+                                    icon = item.icon,
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .clickable {
+                                            when (item.title) {
+                                                "Tree" -> navHostController!!
+                                                    .navigate(BonsaiNavigationTag.AdminTreeScreen.name)
+                                                "Bill" -> navHostController!!
+                                                    .navigate(BonsaiNavigationTag.AdminBillScreen.name)
+                                                "TreeType" -> navHostController!!
+                                                    .navigate(BonsaiNavigationTag.AdminTreeTypeScreen.name)
+                                            }
+                                        }
+                                )
+                            }
+                        })
                 }
             }
         }
+    }
+    LaunchedEffect(key1 = true) {
+        adminMainMenuViewModel.initData(context, SharePrefUtils.getEmail(context))
     }
 }
 

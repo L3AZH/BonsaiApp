@@ -38,13 +38,19 @@ fun AdminTreeTypeItemComponent() {
             )
             Column(modifier = Modifier
                 .weight(1f)
-                .height(100.dp)
+                .height(120.dp)
                 .padding(8.dp)) {
                 Text(
                     text = "Test title !", style = MaterialTheme.typography.caption.copy(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
-                    )
+                    ), maxLines = 1
+                )
+                Text(
+                    text = "Test title !", style = MaterialTheme.typography.caption.copy(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    ), maxLines = 2
                 )
                 Text(
                     text = "Test Description qwe fasfasfasfasfasfasfasfasaxasas asfasf safasfsafs afsa fasfasfasfa sfsafas asdasfasfasfdsgsdgasfasf asfasfasf", style = MaterialTheme.typography.body1.copy(

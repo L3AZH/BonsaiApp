@@ -24,11 +24,21 @@ class SharePrefUtils {
             editer.apply()
         }
 
+        fun getEmail(context: Context):String{
+            val pref = context.getSharedPreferences(Constant.SHARE_PREF_NAME, Context.MODE_PRIVATE)
+            return pref.getString(Constant.EMAIL_FIELD, "")!!
+        }
+
         fun saveRoleToPref(context: Context, role:String){
             val pref = context.getSharedPreferences(Constant.SHARE_PREF_NAME, Context.MODE_PRIVATE)
             val editer = pref.edit()
             editer.putString(Constant.ROLE_FIELD, role)
             editer.apply()
+        }
+
+        fun getRole(context: Context):String{
+            val pref = context.getSharedPreferences(Constant.SHARE_PREF_NAME, Context.MODE_PRIVATE)
+            return pref.getString(Constant.ROLE_FIELD, "")!!
         }
     }
 }

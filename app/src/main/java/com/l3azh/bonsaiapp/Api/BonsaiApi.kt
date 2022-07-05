@@ -2,10 +2,7 @@ package com.l3azh.bonsaiapp.Api
 
 import com.l3azh.bonsaiapp.Api.Request.LoginRequest
 import com.l3azh.bonsaiapp.Api.Request.SignUpRequest
-import com.l3azh.bonsaiapp.Api.Response.BonsaiResponse
-import com.l3azh.bonsaiapp.Api.Response.InfoAccountResponse
-import com.l3azh.bonsaiapp.Api.Response.LoginResponse
-import com.l3azh.bonsaiapp.Api.Response.SignUpResponse
+import com.l3azh.bonsaiapp.Api.Response.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -28,4 +25,9 @@ interface BonsaiApi {
         @Header(value = "Authorization") bearerToken:String,
         @Query(value = "email") email:String
     ):Response<InfoAccountResponse>
+
+    @GET(value = "tree-type/get-all-tree-type")
+    suspend fun getAllTreeType(
+        @Header(value = "Authorization") bearerToken: String
+    ):Response<GetAllTreeTypeResponse>
 }
