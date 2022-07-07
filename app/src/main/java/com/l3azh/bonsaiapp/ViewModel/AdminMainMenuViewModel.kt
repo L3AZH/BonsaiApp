@@ -1,6 +1,7 @@
 package com.l3azh.bonsaiapp.ViewModel
 
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -37,9 +38,23 @@ data class AdminMainMenuState(
         ItemMenuOfAdminMainScreen("TreeType", R.drawable.ic_bs_note, GoldLight)
     ),
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
+    var onPickAndCaptureImage:MutableState<Boolean> = mutableStateOf(false),
     var errorMessage: MutableState<String> = mutableStateOf(""),
     var onError: MutableState<Boolean> = mutableStateOf(false)
-)
+) {
+    fun openDialogPickAndCaptureImage(){
+        onPickAndCaptureImage.value = true
+    }
+
+    fun closeDialogPickAndCaptureImage(){
+        onPickAndCaptureImage.value = false
+    }
+
+    fun updateImageAccountInfo(bitmap: Bitmap){
+        accountInfo.value.avatar = bitmap
+        accountInfo.value = accountInfo.value.copy()
+    }
+}
 
 @HiltViewModel
 class AdminMainMenuViewModel @Inject constructor(
@@ -47,6 +62,7 @@ class AdminMainMenuViewModel @Inject constructor(
 ) : ViewModel() {
 
     val state = mutableStateOf(AdminMainMenuState())
+
 
     fun initData(context: Context, email: String) =
         CoroutineScope(Dispatchers.IO).launch {

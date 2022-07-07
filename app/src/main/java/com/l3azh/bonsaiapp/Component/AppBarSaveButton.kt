@@ -13,10 +13,10 @@ import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 import com.l3azh.bonsaiapp.ui.theme.Green
 
 @Composable
-fun AppBarBackButton(onClick: () -> Unit) {
+fun AppBarSaveButton(onClick: () -> Unit) {
     IconButton(onClick = { onClick() }) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_bs_backbutton),
+            painter = painterResource(id = R.drawable.ic_bs_save_disk),
             contentDescription = "App Bar Back Button",
             tint = Green,
             modifier = Modifier.size(36.dp)
@@ -26,8 +26,8 @@ fun AppBarBackButton(onClick: () -> Unit) {
 
 @Composable
 @Preview
-fun PreviewAppBarBackButton() {
+fun PreviewAppBarSaveButton() {
     BonsaiAppTheme {
-        AppBarBackButton(onClick = {})
+        AppBarSaveButton(onClick = {})
     }
 }

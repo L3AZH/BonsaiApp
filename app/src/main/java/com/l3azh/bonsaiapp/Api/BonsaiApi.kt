@@ -30,4 +30,9 @@ interface BonsaiApi {
     suspend fun getAllTreeType(
         @Header(value = "Authorization") bearerToken: String
     ):Response<GetAllTreeTypeResponse>
+
+    @GET(value = "tree/get-all-tree")
+    suspend fun getAllTree(
+        @Header(value = "Authorization") bearerToken: String
+    ):Response<GetAllTreeResponse>
 }

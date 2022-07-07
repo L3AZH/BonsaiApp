@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.l3azh.bonsaiapp.Component.InfoAccountComponent
 import com.l3azh.bonsaiapp.Component.ItemMenuComponent
+import com.l3azh.bonsaiapp.Dialog.ChoosePickOrCaptureImageDialog
 import com.l3azh.bonsaiapp.Dialog.InformDialog
 import com.l3azh.bonsaiapp.Dialog.LoadingDialog
 import com.l3azh.bonsaiapp.MainActivity
@@ -58,6 +59,16 @@ fun AdminMainScreen(
             LoadingDialog(
                 show = adminMainMenuViewModel.state.value.isLoading.value
             )
+            if(adminMainMenuViewModel.state.value.onPickAndCaptureImage.value){
+                ChoosePickOrCaptureImageDialog(
+                    isShow = true,
+                    onClose = { adminMainMenuViewModel.state.value.closeDialogPickAndCaptureImage()},
+                    nameScreen = navHostController!!.currentBackStackEntry!!.destination.route!!,
+                    onBitmapGotFromChooseOrCapture = { bitmap ->
+                        adminMainMenuViewModel.state.value.updateImageAccountInfo(bitmap)
+                    }
+                )
+            }
             if (adminMainMenuViewModel.state.value.onError.value) {
                 InformDialog(
                     show = true,
@@ -81,7 +92,7 @@ fun AdminMainScreen(
                     avatar = adminMainMenuViewModel.state.value.accountInfo.value.avatar,
                     modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
                     onImageUpdate = {
-
+                        adminMainMenuViewModel.state.value.openDialogPickAndCaptureImage()
                     })
                 LazyVerticalGrid(
                     cells = GridCells.Fixed(2),

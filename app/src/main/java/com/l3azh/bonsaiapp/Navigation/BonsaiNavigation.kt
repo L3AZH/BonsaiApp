@@ -15,7 +15,10 @@ enum class BonsaiNavigationTag(nameScreen: String) {
     RegisterScreen("RegisterScreen"),
     AdminMainMenuScreen("AdminMainMenuScreen"),
     UserMainMenuScreen("UserMainMenuScreen"),
+
     AdminTreeTypeScreen("AdminTreeTypeScreen"),
+    AdminAddTreeTypeScreen("AdminAddTreeTypeScreen"),
+
     AdminTreeScreen("AdminTreeScreen"),
     AdminBillScreen("AdminBillScreen")
 }
@@ -56,6 +59,9 @@ fun BonsaiNavHost(
         }
         composable(BonsaiNavigationTag.AdminBillScreen.name) {
 
+        }
+        composable(BonsaiNavigationTag.AdminAddTreeTypeScreen.name){
+            AdminAddTreeTypeScreen(navHostController)
         }
     }
 }
