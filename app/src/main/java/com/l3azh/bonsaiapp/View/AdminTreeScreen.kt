@@ -24,6 +24,7 @@ import com.l3azh.bonsaiapp.Component.AppBarBackButton
 import com.l3azh.bonsaiapp.Component.DotLineLinkingListComponent
 import com.l3azh.bonsaiapp.Component.EmptyPageComponent
 import com.l3azh.bonsaiapp.Dialog.InformDialog
+import com.l3azh.bonsaiapp.Navigation.BonsaiNavigationTag
 import com.l3azh.bonsaiapp.R
 import com.l3azh.bonsaiapp.ViewModel.AdminTreeViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
@@ -44,7 +45,10 @@ fun AdminTreeScreen(
                 modifier = Modifier.fillMaxWidth(1f),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AppBarBackButton(onClick = {})
+                AppBarBackButton(onClick = {
+                    adminTreeViewModel.resetState()
+                    navHostController.popBackStack()
+                })
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = "Tree",
@@ -62,7 +66,8 @@ fun AdminTreeScreen(
             FloatingActionButton(
                 onClick = {
                     if(!adminTreeViewModel.state.value.isLoading.value){
-
+                        adminTreeViewModel.resetState()
+                        navHostController.navigate(BonsaiNavigationTag.AdminAddTreeScree.name)
                     }
                 },
                 backgroundColor = if (adminTreeViewModel.state.value.isLoading.value) GrayLight else Green,

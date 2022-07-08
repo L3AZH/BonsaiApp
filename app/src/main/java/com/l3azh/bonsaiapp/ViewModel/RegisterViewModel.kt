@@ -50,6 +50,7 @@ class RegisterViewModel @Inject constructor(
                     onSuccess = { registerSuccessResponse ->
                         CoroutineScope(Dispatchers.IO).launch {
                             state.value.isLoading.value = false
+                            state.value.onError.value = false
                         }
                         onSignUpSuccess()
                     },

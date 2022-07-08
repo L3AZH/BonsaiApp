@@ -28,6 +28,10 @@ class AdminTreeViewModel @Inject constructor(private val treeRepository: TreeRep
     ViewModel() {
     var state = mutableStateOf(AdminTreeState())
 
+    fun resetState(){
+        state.value = AdminTreeState()
+    }
+
     fun initData(context: Context) = CoroutineScope(Dispatchers.IO).launch {
         CoroutineScope(Dispatchers.Main).launch {
             state.value.isLoading.value = true
@@ -62,10 +66,12 @@ class AdminTreeViewModel @Inject constructor(private val treeRepository: TreeRep
                 }
             },
             onError = { bonsaiErrorResponse ->
-                state.value.isLoading.value = false
-                state.value.onError.value = true
-                state.value.isEmpty.value = true
-                state.value.errorMessage.value = bonsaiErrorResponse.errorMessage
+                CoroutineScope(Dispatchers.Main).launch {
+                    state.value.isLoading.value = false
+                    state.value.onError.value = true
+                    state.value.isEmpty.value = true
+                    state.value.errorMessage.value = bonsaiErrorResponse.errorMessage
+                }
             }
         )
     }

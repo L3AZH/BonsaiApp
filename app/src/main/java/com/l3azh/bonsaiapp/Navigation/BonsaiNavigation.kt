@@ -20,6 +20,8 @@ enum class BonsaiNavigationTag(nameScreen: String) {
     AdminAddTreeTypeScreen("AdminAddTreeTypeScreen"),
 
     AdminTreeScreen("AdminTreeScreen"),
+    AdminAddTreeScree("AdminAddTreeScree"),
+
     AdminBillScreen("AdminBillScreen")
 }
 
@@ -55,13 +57,22 @@ fun BonsaiNavHost(
             AdminTreeTypeScreen((context as MainActivity).adminTreeTypeViewModel, navHostController)
         }
         composable(BonsaiNavigationTag.AdminTreeScreen.name) {
-
+            AdminTreeScreen((context as MainActivity).adminTreeViewModel, navHostController)
         }
         composable(BonsaiNavigationTag.AdminBillScreen.name) {
 
         }
-        composable(BonsaiNavigationTag.AdminAddTreeTypeScreen.name){
-            AdminAddTreeTypeScreen(navHostController)
+        composable(BonsaiNavigationTag.AdminAddTreeTypeScreen.name) {
+            AdminAddTreeTypeScreen(
+                (context as MainActivity).adminAddTreeTypeViewModel,
+                navHostController
+            )
+        }
+        composable(BonsaiNavigationTag.AdminAddTreeScree.name) {
+            AdminAddTreeScreen(
+                (context as MainActivity).adminAddTreeViewModel,
+                navHostController
+            )
         }
     }
 }

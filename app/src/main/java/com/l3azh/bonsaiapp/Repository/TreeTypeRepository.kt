@@ -2,10 +2,14 @@ package com.l3azh.bonsaiapp.Repository
 
 import android.content.Context
 import com.l3azh.bonsaiapp.Api.BonsaiApi
+import com.l3azh.bonsaiapp.Api.Request.CreateTreeTypeRequest
 import com.l3azh.bonsaiapp.Api.Response.BonsaiErrorResponse
+import com.l3azh.bonsaiapp.Api.Response.CreateTreeTypeResponse
 import com.l3azh.bonsaiapp.Api.Response.GetAllTreeTypeResponse
-import com.l3azh.bonsaiapp.Util.BonsaiAppUtils
 import com.l3azh.bonsaiapp.Util.SharePrefUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TreeTypeRepository @Inject constructor(private val bonsaiApi: BonsaiApi) {
@@ -23,6 +27,24 @@ class TreeTypeRepository @Inject constructor(private val bonsaiApi: BonsaiApi) {
                 onError(BonsaiErrorResponse.convertFromErrorBody(response.errorBody()!!))
             }
         } catch (e:Exception){
+            onError(BonsaiErrorResponse.convertFromException(e))
+        }
+    }
+
+    suspend fun createNewTreeType(
+        context: Context,
+        request: CreateTreeTypeRequest,
+        onSuccess: (CreateTreeTypeResponse) -> Unit,
+        onError: (BonsaiErrorResponse) -> Unit
+    ) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = bonsaiApi.createNewTreeType(SharePrefUtils.getBearerToken(context), request)
+            if (response.isSuccessful) {
+                onSuccess(response.body()!!)
+            } else {
+                onError(BonsaiErrorResponse.convertFromErrorBody(response.errorBody()!!))
+            }
+        } catch (e: Exception) {
             onError(BonsaiErrorResponse.convertFromException(e))
         }
     }

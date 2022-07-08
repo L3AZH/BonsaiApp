@@ -13,10 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.l3azh.bonsaiapp.Navigation.BonsaiNavHost
 import com.l3azh.bonsaiapp.Service.PickAndCaptureImageService
-import com.l3azh.bonsaiapp.ViewModel.AdminMainMenuViewModel
-import com.l3azh.bonsaiapp.ViewModel.AdminTreeTypeViewModel
-import com.l3azh.bonsaiapp.ViewModel.LoginViewModel
-import com.l3azh.bonsaiapp.ViewModel.RegisterViewModel
+import com.l3azh.bonsaiapp.ViewModel.*
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +24,9 @@ class MainActivity : ComponentActivity() {
     val registerViewModel:RegisterViewModel by viewModels()
     val adminMainMenuViewModel:AdminMainMenuViewModel by viewModels()
     val adminTreeTypeViewModel:AdminTreeTypeViewModel by viewModels()
+    val adminTreeViewModel:AdminTreeViewModel by viewModels()
+    val adminAddTreeTypeViewModel:AdminAddTreeTypeViewModel by viewModels()
+    val adminAddTreeViewModel:AdminAddTreeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

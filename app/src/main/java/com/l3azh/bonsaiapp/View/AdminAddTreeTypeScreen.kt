@@ -17,10 +17,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.l3azh.bonsaiapp.Component.AppBarBackButton
 import com.l3azh.bonsaiapp.Component.AppBarSaveButton
+import com.l3azh.bonsaiapp.Dialog.InformDialog
+import com.l3azh.bonsaiapp.Dialog.LoadingDialog
+import com.l3azh.bonsaiapp.ViewModel.AdminAddTreeTypeViewModel
+import com.l3azh.bonsaiapp.ViewModel.AdminTreeTypeViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 
 @Composable
 fun AdminAddTreeTypeScreen(
+    adminAddTreeTypeViewModel: AdminAddTreeTypeViewModel,
     navHostController: NavHostController
 ) {
     Scaffold(
@@ -31,6 +36,7 @@ fun AdminAddTreeTypeScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 AppBarBackButton(onClick = {
+                    adminAddTreeTypeViewModel.resetState()
                     navHostController.popBackStack()
                 })
                 AppBarSaveButton(onClick = {
@@ -38,39 +44,60 @@ fun AdminAddTreeTypeScreen(
             }
         }
     ) {
-        Column(modifier = Modifier
-            .fillMaxSize(1f)
-            .padding(32.dp)) {
-            Text(text = "Name Type", style = MaterialTheme.typography.caption.copy(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            ))
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
-                modifier = Modifier.fillMaxWidth(1f),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                singleLine = false,
-                maxLines = 1
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Description",style = MaterialTheme.typography.caption.copy(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            ))
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
-                modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .height(120.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                singleLine = false,
-                maxLines = 4,
-            )
+        Box(modifier = Modifier.fillMaxSize(1f)) {
+            LoadingDialog(show = adminAddTreeTypeViewModel.state.value.isLoading.value)
+            if (adminAddTreeTypeViewModel.state.value.onError.value) {
+                InformDialog(
+                    show = true,
+                    title = "Error",
+                    message = adminAddTreeTypeViewModel.state.value.errorMessage.value,
+                    positiveButtonEnable = true,
+                    namePositiveButton = "OK",
+                    onPositiveClick = { dialogState ->
+                        dialogState.value = false
+                        adminAddTreeTypeViewModel.state.value.onError.value = false
+                    },
+                    onTapOutSideDialog = { dialogState ->
+                        dialogState.value = false
+                        adminAddTreeTypeViewModel.state.value.onError.value = false
+                    }
+                )
+            }
+            Column(modifier = Modifier
+                .fillMaxSize(1f)
+                .padding(32.dp)) {
+                Text(text = "Name Type", style = MaterialTheme.typography.caption.copy(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                ))
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = adminAddTreeTypeViewModel.state.value.nameType.value,
+                    onValueChange = { adminAddTreeTypeViewModel.state.value.nameType.value = it},
+                    modifier = Modifier.fillMaxWidth(1f),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    singleLine = false,
+                    maxLines = 1
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Description",style = MaterialTheme.typography.caption.copy(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                ))
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = adminAddTreeTypeViewModel.state.value.description.value,
+                    onValueChange = {adminAddTreeTypeViewModel.state.value.description.value = it},
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
+                        .height(120.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    singleLine = false,
+                    maxLines = 4,
+                )
+            }
         }
+
     }
 }
 

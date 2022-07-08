@@ -1,5 +1,7 @@
 package com.l3azh.bonsaiapp.Api
 
+import com.l3azh.bonsaiapp.Api.Request.CreateTreeRequest
+import com.l3azh.bonsaiapp.Api.Request.CreateTreeTypeRequest
 import com.l3azh.bonsaiapp.Api.Request.LoginRequest
 import com.l3azh.bonsaiapp.Api.Request.SignUpRequest
 import com.l3azh.bonsaiapp.Api.Response.*
@@ -31,8 +33,20 @@ interface BonsaiApi {
         @Header(value = "Authorization") bearerToken: String
     ):Response<GetAllTreeTypeResponse>
 
+    @POST(value = "tree-type/create-tree-type")
+    suspend fun createNewTreeType(
+        @Header(value = "Authorization") bearerToken: String,
+        @Body request:CreateTreeTypeRequest
+    ):Response<CreateTreeTypeResponse>
+
     @GET(value = "tree/get-all-tree")
     suspend fun getAllTree(
         @Header(value = "Authorization") bearerToken: String
     ):Response<GetAllTreeResponse>
+
+    @POST(value = "tree/create-new-tree")
+    suspend fun createNewTree(
+        @Header(value = "Authorization") bearerToken: String,
+        @Body request:CreateTreeRequest
+    ):Response<CreateTreeResponse>
 }

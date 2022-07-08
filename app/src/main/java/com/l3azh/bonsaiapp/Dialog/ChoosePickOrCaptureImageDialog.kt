@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.l3azh.bonsaiapp.Service.PickAndCaptureImageService
 import com.l3azh.bonsaiapp.Service.TypeAction
+import com.l3azh.bonsaiapp.ui.theme.transparent_b_73
 
 @Composable
 fun ChoosePickOrCaptureImageDialog(
@@ -34,7 +35,7 @@ fun ChoosePickOrCaptureImageDialog(
         Box(
             modifier = Modifier
                 .fillMaxSize(1f)
-                .background(color = Color.Transparent)
+                .background(color = transparent_b_73)
                 .clickable(
                     indication = null, // disable ripple effect
                     interactionSource = remember { MutableInteractionSource() },

@@ -59,16 +59,6 @@ fun AdminMainScreen(
             LoadingDialog(
                 show = adminMainMenuViewModel.state.value.isLoading.value
             )
-            if(adminMainMenuViewModel.state.value.onPickAndCaptureImage.value){
-                ChoosePickOrCaptureImageDialog(
-                    isShow = true,
-                    onClose = { adminMainMenuViewModel.state.value.closeDialogPickAndCaptureImage()},
-                    nameScreen = navHostController!!.currentBackStackEntry!!.destination.route!!,
-                    onBitmapGotFromChooseOrCapture = { bitmap ->
-                        adminMainMenuViewModel.state.value.updateImageAccountInfo(bitmap)
-                    }
-                )
-            }
             if (adminMainMenuViewModel.state.value.onError.value) {
                 InformDialog(
                     show = true,
@@ -127,6 +117,16 @@ fun AdminMainScreen(
                 }
             }
         }
+    }
+    if(adminMainMenuViewModel.state.value.onPickAndCaptureImage.value){
+        ChoosePickOrCaptureImageDialog(
+            isShow = true,
+            onClose = { adminMainMenuViewModel.state.value.closeDialogPickAndCaptureImage()},
+            nameScreen = navHostController!!.currentBackStackEntry!!.destination.route!!,
+            onBitmapGotFromChooseOrCapture = { bitmap ->
+                adminMainMenuViewModel.state.value.updateImageAccountInfo(bitmap)
+            }
+        )
     }
     LaunchedEffect(key1 = true) {
         adminMainMenuViewModel.initData(context, SharePrefUtils.getEmail(context))

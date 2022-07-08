@@ -4,66 +4,52 @@ import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.l3azh.bonsaiapp.Api.Response.TreeTypeResponseData
-import com.l3azh.bonsaiapp.Model.TreeTypeState
+import com.l3azh.bonsaiapp.Api.Request.CreateTreeTypeRequest
 import com.l3azh.bonsaiapp.Repository.TreeTypeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class AdminTreeTypeState(
-    var listTreeType: MutableState<List<TreeTypeState>> = mutableStateOf(listOf()),
+class AdminAddTreeTypeState(
+    val nameType: MutableState<String> = mutableStateOf(""),
+    val description: MutableState<String> = mutableStateOf(""),
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
-    var isEmpty: MutableState<Boolean> = mutableStateOf(true),
     var errorMessage: MutableState<String> = mutableStateOf(""),
     var onError: MutableState<Boolean> = mutableStateOf(false)
 )
 
 @HiltViewModel
-class AdminTreeTypeViewModel @Inject constructor(
-    private val treeTypeRepository: TreeTypeRepository) :
+class AdminAddTreeTypeViewModel @Inject constructor(private val treeTypeRepository: TreeTypeRepository) :
     ViewModel() {
-    var state = mutableStateOf(AdminTreeTypeState())
+
+    var state = mutableStateOf(AdminAddTreeTypeState())
 
     fun resetState(){
-        state.value = AdminTreeTypeState()
+        state.value = AdminAddTreeTypeState()
     }
 
-    fun getAllTreeType(context: Context) =
+    fun saveNewTreeType(context: Context, onSaveSuccess: (String) -> Unit) =
         CoroutineScope(Dispatchers.IO).launch {
             CoroutineScope(Dispatchers.Main).launch {
                 state.value.isLoading.value = true
-                state.value.isEmpty.value = false
             }
-            delay(5000)
-            treeTypeRepository.getAllTreeType(
-                context = context,
-                onSuccess = { getAllTreeTypeResponse ->
+            treeTypeRepository.createNewTreeType(context,
+                CreateTreeTypeRequest(state.value.nameType.value, state.value.description.value),
+                onSuccess = { createTreeTypeResponse ->
                     CoroutineScope(Dispatchers.Main).launch {
                         state.value.isLoading.value = false
                         state.value.onError.value = false
-                        if(getAllTreeTypeResponse.data.isEmpty()){
-                            state.value.isEmpty.value = true
-                        } else {
-                            state.value.isEmpty.value = false
-                            val transform:(TreeTypeResponseData) -> TreeTypeState = { it ->
-                                TreeTypeState(it.uuid, it.name, it.description)
-                            }
-                            state.value.listTreeType.value = getAllTreeTypeResponse.data.map(transform)
-                        }
+                        onSaveSuccess(createTreeTypeResponse.message)
                     }
                 },
                 onError = { bonsaiErrorResponse ->
                     CoroutineScope(Dispatchers.Main).launch {
                         state.value.isLoading.value = false
                         state.value.onError.value = true
-                        state.value.isEmpty.value = true
                         state.value.errorMessage.value = bonsaiErrorResponse.errorMessage
                     }
-                }
-            )
+                })
         }
 }
