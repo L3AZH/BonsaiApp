@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.gson.Gson
 import com.l3azh.bonsaiapp.Component.AdminTreeTypeItemComponent
 import com.l3azh.bonsaiapp.Component.AppBarBackButton
 import com.l3azh.bonsaiapp.Component.EmptyPageComponent
@@ -89,6 +90,26 @@ fun AdminTreeTypeScreen(
             }
         }
     ) {
+        if (adminTreeTypeViewModel.state.value.isEmpty.value) {
+            EmptyPageComponent()
+        } else {
+            Box(modifier = Modifier.fillMaxSize(1f)) {
+                LazyColumn {
+                    items(items = adminTreeTypeViewModel.state.value.listTreeType.value) { treeType ->
+                        AdminTreeTypeItemComponent(
+                            treeType.uuid,
+                            treeType.name,
+                            treeType.description,
+                            onClick = {
+                                adminTreeTypeViewModel.resetState()
+                                navHostController.navigate(
+                                    "${BonsaiNavigationTag.AdminTreeTypeDetailScreen.name}/${Gson().toJson(treeType)}")
+                            }
+                        )
+                    }
+                }
+            }
+        }
         LoadingScreen(isShow = adminTreeTypeViewModel.state.value.isLoading.value)
         if (adminTreeTypeViewModel.state.value.onError.value) {
             InformDialog(
@@ -102,17 +123,6 @@ fun AdminTreeTypeScreen(
                     adminTreeTypeViewModel.state.value.onError.value = false
                 }
             )
-        }
-        if (adminTreeTypeViewModel.state.value.isEmpty.value) {
-            EmptyPageComponent()
-        } else {
-            Box(modifier = Modifier.fillMaxSize(1f)) {
-                LazyColumn {
-                    items(items = adminTreeTypeViewModel.state.value.listTreeType.value) {
-                        AdminTreeTypeItemComponent()
-                    }
-                }
-            }
         }
     }
     LaunchedEffect(key1 = true) {

@@ -1,13 +1,19 @@
 package com.l3azh.bonsaiapp.Navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.google.gson.Gson
 import com.l3azh.bonsaiapp.MainActivity
+import com.l3azh.bonsaiapp.Model.TreeTypeState
 import com.l3azh.bonsaiapp.View.*
+import com.l3azh.bonsaiapp.ViewModel.AdminTreeTypeDetailState
 
 enum class BonsaiNavigationTag(nameScreen: String) {
     SplashScreen("SplashScreen"),
@@ -17,6 +23,7 @@ enum class BonsaiNavigationTag(nameScreen: String) {
     UserMainMenuScreen("UserMainMenuScreen"),
 
     AdminTreeTypeScreen("AdminTreeTypeScreen"),
+    AdminTreeTypeDetailScreen("AdminTreeTypeDetailScreen"),
     AdminAddTreeTypeScreen("AdminAddTreeTypeScreen"),
 
     AdminTreeScreen("AdminTreeScreen"),
@@ -71,6 +78,21 @@ fun BonsaiNavHost(
         composable(BonsaiNavigationTag.AdminAddTreeScree.name) {
             AdminAddTreeScreen(
                 (context as MainActivity).adminAddTreeViewModel,
+                navHostController
+            )
+        }
+        composable(
+            "${BonsaiNavigationTag.AdminTreeTypeDetailScreen.name}/{treeTypeDetailInfo}",
+            arguments = listOf(navArgument("treeTypeDetailInfo"){
+                type = NavType.StringType
+            })
+        ){
+            val treeTypeDetailInfo =
+                Gson().fromJson(it.arguments!!.getString("treeTypeDetailInfo"), TreeTypeState::class.java)
+            AdminTreeTypeDetailScreen(
+                (context as MainActivity).adminTreeTypeDetailViewModel.apply {
+                    this.initState(treeTypeDetailInfo)
+                },
                 navHostController
             )
         }

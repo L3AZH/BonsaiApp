@@ -27,7 +27,8 @@ class AdminAddTreeState(
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
     var onPickAndCaptureImage:MutableState<Boolean> = mutableStateOf(false),
     var errorMessage: MutableState<String> = mutableStateOf(""),
-    var onError: MutableState<Boolean> = mutableStateOf(false)
+    var onError: MutableState<Boolean> = mutableStateOf(false),
+    var onAddSuccess: MutableState<Boolean> = mutableStateOf(false)
 ){
     fun openDialogPickAndCaptureImage(){
         onPickAndCaptureImage.value = true
@@ -84,7 +85,7 @@ class AdminAddTreeViewModel @Inject constructor(
             )
         }
 
-    fun createNewType(context: Context, onSaveSuccess:(String)->Unit) =
+    fun createNewType(context: Context) =
         CoroutineScope(Dispatchers.IO).launch {
             CoroutineScope(Dispatchers.Main).launch {
                 state.value.isLoading.value = true
@@ -102,7 +103,7 @@ class AdminAddTreeViewModel @Inject constructor(
                     CoroutineScope(Dispatchers.Main).launch {
                         state.value.isLoading.value = false
                         state.value.onError.value = false
-                        onSaveSuccess(createTreeResponse.message)
+                        state.value.onAddSuccess.value = true
                     }
                 },
                 onError = { bonsaiErrorResponse ->

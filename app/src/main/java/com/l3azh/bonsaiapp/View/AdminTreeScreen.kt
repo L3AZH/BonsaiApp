@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -96,6 +98,47 @@ fun AdminTreeScreen(
         Box(
             modifier = Modifier.fillMaxSize(1f)
         ) {
+            if (adminTreeViewModel.state.value.isEmpty.value) {
+                EmptyPageComponent()
+            } else {
+                LazyColumn {
+                    items(adminTreeViewModel.state.value.listTree.value) { tree ->
+                        Row(
+                            verticalAlignment = Alignment.Top,
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            if(tree.picture == null){
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_bs_tree),
+                                    contentDescription = "Picture",
+                                    modifier = Modifier
+                                        .size(80.dp)
+                                        .clip(CircleShape)
+                                        .border(2.dp, Color.Black, CircleShape)
+                                )
+                            } else {
+                                Image(
+                                    bitmap = tree.picture.asImageBitmap(),
+                                    contentDescription = "Picture",
+                                    modifier = Modifier
+                                        .size(80.dp)
+                                        .clip(CircleShape)
+                                        .border(2.dp, Color.Black, CircleShape)
+                                )
+                            }
+                            DotLineLinkingListComponent(
+                                title = tree.name,
+                                list = listOf(
+                                    tree.uuid,
+                                    tree.price.toString(),
+                                    tree.description,
+                                    tree.type.name
+                                ),
+                            )
+                        }
+                    }
+                }
+            }
             LoadingScreen(isShow = adminTreeViewModel.state.value.isLoading.value)
             if (adminTreeViewModel.state.value.onError.value) {
                 InformDialog(
@@ -109,36 +152,6 @@ fun AdminTreeScreen(
                         adminTreeViewModel.state.value.onError.value = false
                     }
                 )
-            }
-            if (adminTreeViewModel.state.value.isEmpty.value) {
-                EmptyPageComponent()
-            } else {
-                LazyColumn {
-                    items(5) {
-                        Row(
-                            verticalAlignment = Alignment.Top,
-                            modifier = Modifier.padding(8.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_bs_tree),
-                                contentDescription = "Picture",
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .clip(CircleShape)
-                                    .border(2.dp, Color.Black, CircleShape)
-                            )
-                            DotLineLinkingListComponent(
-                                title = "test123",
-                                list = listOf(
-                                    "qwdsdsads asfasfsaf asdsad asd adsad",
-                                    "asdasdsadasdasdqwrqwfsafsadasd qwdqwd",
-                                    "asdasasdasd",
-                                    "qwdwqdasfafsfsaf"
-                                ),
-                            )
-                        }
-                    }
-                }
             }
         }
     }

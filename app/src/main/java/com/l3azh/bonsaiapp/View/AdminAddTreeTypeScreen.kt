@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +29,7 @@ fun AdminAddTreeTypeScreen(
     adminAddTreeTypeViewModel: AdminAddTreeTypeViewModel,
     navHostController: NavHostController
 ) {
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             Row(
@@ -40,29 +42,12 @@ fun AdminAddTreeTypeScreen(
                     navHostController.popBackStack()
                 })
                 AppBarSaveButton(onClick = {
+                    adminAddTreeTypeViewModel.saveNewTreeType(context)
                 })
             }
         }
     ) {
         Box(modifier = Modifier.fillMaxSize(1f)) {
-            LoadingDialog(show = adminAddTreeTypeViewModel.state.value.isLoading.value)
-            if (adminAddTreeTypeViewModel.state.value.onError.value) {
-                InformDialog(
-                    show = true,
-                    title = "Error",
-                    message = adminAddTreeTypeViewModel.state.value.errorMessage.value,
-                    positiveButtonEnable = true,
-                    namePositiveButton = "OK",
-                    onPositiveClick = { dialogState ->
-                        dialogState.value = false
-                        adminAddTreeTypeViewModel.state.value.onError.value = false
-                    },
-                    onTapOutSideDialog = { dialogState ->
-                        dialogState.value = false
-                        adminAddTreeTypeViewModel.state.value.onError.value = false
-                    }
-                )
-            }
             Column(modifier = Modifier
                 .fillMaxSize(1f)
                 .padding(32.dp)) {
@@ -96,8 +81,39 @@ fun AdminAddTreeTypeScreen(
                     maxLines = 4,
                 )
             }
+            LoadingDialog(show = adminAddTreeTypeViewModel.state.value.isLoading.value)
+            if (adminAddTreeTypeViewModel.state.value.onError.value) {
+                InformDialog(
+                    show = true,
+                    title = "Error",
+                    message = adminAddTreeTypeViewModel.state.value.errorMessage.value,
+                    positiveButtonEnable = true,
+                    namePositiveButton = "OK",
+                    onPositiveClick = { dialogState ->
+                        dialogState.value = false
+                        adminAddTreeTypeViewModel.state.value.onError.value = false
+                    },
+                    onTapOutSideDialog = { dialogState ->
+                        dialogState.value = false
+                        adminAddTreeTypeViewModel.state.value.onError.value = false
+                    }
+                )
+            }
+            if(adminAddTreeTypeViewModel.state.value.onAddSuccess.value){
+                InformDialog(
+                    show = true,
+                    title = "Success",
+                    message = "Add new Tree Type success !",
+                    positiveButtonEnable = true,
+                    namePositiveButton = "OK",
+                    onPositiveClick = { dialogState ->
+                        dialogState.value = false
+                        adminAddTreeTypeViewModel.resetState()
+                        navHostController.popBackStack()
+                    },
+                )
+            }
         }
-
     }
 }
 

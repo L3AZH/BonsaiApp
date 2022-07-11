@@ -1,6 +1,5 @@
 package com.l3azh.bonsaiapp.Component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -45,10 +45,11 @@ fun ItemMenuComponent(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.size(60.dp).background(color.copy(alpha = 0.25f))
                     ) {
-                        Image(
+                        Icon(
                             painter = painterResource(id = icon),
                             contentDescription = "Icon",
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(40.dp),
+                            tint = Color.White
                         )
                         Text(
                             text = name,

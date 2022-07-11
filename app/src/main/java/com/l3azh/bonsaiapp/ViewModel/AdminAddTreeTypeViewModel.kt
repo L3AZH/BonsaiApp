@@ -17,7 +17,8 @@ class AdminAddTreeTypeState(
     val description: MutableState<String> = mutableStateOf(""),
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
     var errorMessage: MutableState<String> = mutableStateOf(""),
-    var onError: MutableState<Boolean> = mutableStateOf(false)
+    var onError: MutableState<Boolean> = mutableStateOf(false),
+    var onAddSuccess:MutableState<Boolean> = mutableStateOf(false)
 )
 
 @HiltViewModel
@@ -30,7 +31,7 @@ class AdminAddTreeTypeViewModel @Inject constructor(private val treeTypeReposito
         state.value = AdminAddTreeTypeState()
     }
 
-    fun saveNewTreeType(context: Context, onSaveSuccess: (String) -> Unit) =
+    fun saveNewTreeType(context: Context) =
         CoroutineScope(Dispatchers.IO).launch {
             CoroutineScope(Dispatchers.Main).launch {
                 state.value.isLoading.value = true
@@ -41,7 +42,7 @@ class AdminAddTreeTypeViewModel @Inject constructor(private val treeTypeReposito
                     CoroutineScope(Dispatchers.Main).launch {
                         state.value.isLoading.value = false
                         state.value.onError.value = false
-                        onSaveSuccess(createTreeTypeResponse.message)
+                        state.value.onAddSuccess.value = true
                     }
                 },
                 onError = { bonsaiErrorResponse ->

@@ -1,6 +1,7 @@
 package com.l3azh.bonsaiapp.Component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -19,11 +20,18 @@ import com.l3azh.bonsaiapp.R
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 
 @Composable
-fun AdminTreeTypeItemComponent() {
+fun AdminTreeTypeItemComponent(
+    uuid:String,
+    name:String,
+    description:String,
+    onClick:()->Unit
+) {
     Card(
         shape = RoundedCornerShape(20),
         elevation = 10.dp,
-        modifier = Modifier.padding(horizontal = 32.dp, vertical = 10.dp)
+        modifier = Modifier.padding(horizontal = 32.dp, vertical = 10.dp).clickable {
+            onClick()
+        }
     ) {
         Row(
             modifier = Modifier
@@ -41,19 +49,19 @@ fun AdminTreeTypeItemComponent() {
                 .height(120.dp)
                 .padding(8.dp)) {
                 Text(
-                    text = "Test title !", style = MaterialTheme.typography.caption.copy(
+                    text = name, style = MaterialTheme.typography.caption.copy(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     ), maxLines = 1
                 )
                 Text(
-                    text = "Test title !", style = MaterialTheme.typography.caption.copy(
+                    text = uuid, style = MaterialTheme.typography.caption.copy(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     ), maxLines = 2
                 )
                 Text(
-                    text = "Test Description qwe fasfasfasfasfasfasfasfasaxasas asfasf safasfsafs afsa fasfasfasfa sfsafas asdasfasfasfdsgsdgasfasf asfasfasf", style = MaterialTheme.typography.body1.copy(
+                    text = description, style = MaterialTheme.typography.body1.copy(
                         fontSize = 14.sp,
                     ), maxLines = 4, overflow = TextOverflow.Ellipsis
                 )
@@ -66,7 +74,7 @@ fun AdminTreeTypeItemComponent() {
 @Preview
 fun PreviewAdminTreeTypeItemComponent() {
     BonsaiAppTheme {
-        AdminTreeTypeItemComponent()
+        //AdminTreeTypeItemComponent()
     }
 
 }

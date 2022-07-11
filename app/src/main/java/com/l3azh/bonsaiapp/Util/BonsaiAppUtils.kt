@@ -40,12 +40,12 @@ class BonsaiAppUtils {
             var byteArrayOutputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
             val byteArray = byteArrayOutputStream.toByteArray()
-            return Base64.encodeToString(byteArray, Base64.DEFAULT)
+            return Base64.encodeToString(byteArray, Base64.NO_WRAP)
         }
 
         @JvmStatic
         fun getBitmapFromStringData(bitmapString: String): Bitmap {
-            val byteArray = Base64.decode(bitmapString, Base64.DEFAULT)
+            val byteArray = Base64.decode(bitmapString, Base64.NO_WRAP)
             return BitmapFactory.decodeByteArray( byteArray, 0, byteArray.size)
         }
 

@@ -51,29 +51,12 @@ fun AdminAddTreeScreen(
                     navHostController.popBackStack()
                 })
                 AppBarSaveButton(onClick = {
+                    adminAddTreeViewModel.createNewType(context)
                 })
             }
         }
     ) {
         Box(modifier = Modifier.fillMaxSize(1f)) {
-            LoadingDialog(show = adminAddTreeViewModel.state.value.isLoading.value)
-            if (adminAddTreeViewModel.state.value.onError.value) {
-                InformDialog(
-                    show = true,
-                    title = "Error",
-                    message = adminAddTreeViewModel.state.value.errorMessage.value,
-                    positiveButtonEnable = true,
-                    namePositiveButton = "OK",
-                    onPositiveClick = { dialogState ->
-                        dialogState.value = false
-                        adminAddTreeViewModel.state.value.onError.value = false
-                    },
-                    onTapOutSideDialog = { dialogState ->
-                        dialogState.value = false
-                        adminAddTreeViewModel.state.value.onError.value = false
-                    }
-                )
-            }
             Column(
                 modifier = Modifier
                     .fillMaxSize(1f)
@@ -108,7 +91,10 @@ fun AdminAddTreeScreen(
                 BonsaiDropDownMenu<TreeTypeState>(
                     Modifier.fillMaxWidth(1f),
                     adminAddTreeViewModel.state.value.listType.value,
-                    adminAddTreeViewModel.state.value.typeChoose.value
+                    adminAddTreeViewModel.state.value.typeChoose.value,
+                    onSelectedItem = { itemSelected ->
+                        adminAddTreeViewModel.state.value.typeChoose.value = itemSelected
+                    }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -183,6 +169,38 @@ fun AdminAddTreeScreen(
                         }
                     )
                 }
+            }
+            LoadingDialog(show = adminAddTreeViewModel.state.value.isLoading.value)
+            if (adminAddTreeViewModel.state.value.onError.value) {
+                InformDialog(
+                    show = true,
+                    title = "Error",
+                    message = adminAddTreeViewModel.state.value.errorMessage.value,
+                    positiveButtonEnable = true,
+                    namePositiveButton = "OK",
+                    onPositiveClick = { dialogState ->
+                        dialogState.value = false
+                        adminAddTreeViewModel.state.value.onError.value = false
+                    },
+                    onTapOutSideDialog = { dialogState ->
+                        dialogState.value = false
+                        adminAddTreeViewModel.state.value.onError.value = false
+                    }
+                )
+            }
+            if(adminAddTreeViewModel.state.value.onAddSuccess.value){
+                InformDialog(
+                    show = true,
+                    title = "Success",
+                    message = "Add new Tree successful !",
+                    positiveButtonEnable = true,
+                    namePositiveButton = "OK",
+                    onPositiveClick = { dialogState ->
+                        dialogState.value = false
+                        adminAddTreeViewModel.resetState()
+                        navHostController.popBackStack()
+                    },
+                )
             }
         }
     }

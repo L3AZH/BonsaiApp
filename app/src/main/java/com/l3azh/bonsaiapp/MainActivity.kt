@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
     val adminTreeViewModel:AdminTreeViewModel by viewModels()
     val adminAddTreeTypeViewModel:AdminAddTreeTypeViewModel by viewModels()
     val adminAddTreeViewModel:AdminAddTreeViewModel by viewModels()
+    val adminTreeTypeDetailViewModel:AdminTreeTypeDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

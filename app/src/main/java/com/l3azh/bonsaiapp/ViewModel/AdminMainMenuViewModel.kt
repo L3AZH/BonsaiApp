@@ -14,6 +14,7 @@ import com.l3azh.bonsaiapp.Util.BonsaiAppUtils
 import com.l3azh.bonsaiapp.ui.theme.GoldLight
 import com.l3azh.bonsaiapp.ui.theme.GreenSuperLight
 import com.l3azh.bonsaiapp.ui.theme.RoseLight
+import com.l3azh.bonsaiapp.ui.theme.defaultDialogButton
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +36,8 @@ data class AdminMainMenuState(
     val listItem: List<ItemMenuOfAdminMainScreen> = listOf(
         ItemMenuOfAdminMainScreen("Tree", R.drawable.ic_bs_tree, GreenSuperLight),
         ItemMenuOfAdminMainScreen("Bill", R.drawable.ic_bs_bill, RoseLight),
-        ItemMenuOfAdminMainScreen("TreeType", R.drawable.ic_bs_note, GoldLight)
+        ItemMenuOfAdminMainScreen("TreeType", R.drawable.ic_bs_note, GoldLight),
+        ItemMenuOfAdminMainScreen("Account", R.drawable.ic_bs_add_admin_user, defaultDialogButton)
     ),
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
     var onPickAndCaptureImage:MutableState<Boolean> = mutableStateOf(false),
