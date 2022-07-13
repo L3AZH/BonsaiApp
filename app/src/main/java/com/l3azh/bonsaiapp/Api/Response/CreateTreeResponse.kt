@@ -2,8 +2,13 @@ package com.l3azh.bonsaiapp.Api.Response
 
 import com.google.gson.annotations.SerializedName
 
-data class CreateTreeResponse(
+data class CreateTreeResponseData(
     @SerializedName(value = "message")
-    val message:String
+    val message: String
+)
+
+data class CreateTreeResponse(
+    @SerializedName(value = "data")
+    val data:CreateTreeResponseData
 ): BonsaiResponse(-1, false) {
 }

@@ -40,7 +40,10 @@ fun UserMainMenuScreen(
         },
         modifier = Modifier.fillMaxSize(1f)
     ) {
-        BonsaiBottomNavHost(navHostController = navBottomHostController, modifier = Modifier)
+        BonsaiBottomNavHost(
+            navHostController = navHostController!!,
+            navBottomHostController = navBottomHostController,
+            modifier = Modifier)
     }
 }
 

@@ -7,6 +7,9 @@ import retrofit2.http.*
 
 interface BonsaiApi {
 
+    /**
+     * Authentication
+     */
     @POST(value = "auth/login")
     suspend fun login(
         @Header(value = "Authorization") basicAuth:String,
@@ -24,6 +27,17 @@ interface BonsaiApi {
         @Header(value = "Authorization") bearerToken:String,
         @Query(value = "email") email:String
     ):Response<InfoAccountResponse>
+
+    @PUT(value = "account/update-info")
+    suspend fun updateAccountInfo(
+        @Header(value = "Authorization") bearerToken: String,
+        @Query(value = "email") email: String,
+        @Body infoAccount:UpdateAccountRequest
+    ):Response<UpdateAccountInfoResponse>
+
+    /**
+     * Tree Type
+     */
 
     @GET(value = "tree-type/get-all-tree-type")
     suspend fun getAllTreeType(
@@ -43,14 +57,39 @@ interface BonsaiApi {
         @Body request: UpdateTreeTypeRequest
     ):Response<UpdateTreeTypeResponse>
 
+    /**
+     * Tree
+     */
     @GET(value = "tree/get-all-tree")
     suspend fun getAllTree(
         @Header(value = "Authorization") bearerToken: String
     ):Response<GetAllTreeResponse>
+
+    @GET(value = "tree/get-tree")
+    suspend fun getTreeInfo(
+        @Header(value = "Authorization") bearerToken: String,
+        @Query(value = "uuidTree") uuidTree: String
+    ):Response<GetTreeResponse>
 
     @POST(value = "tree/create-new-tree")
     suspend fun createNewTree(
         @Header(value = "Authorization") bearerToken: String,
         @Body request:CreateTreeRequest
     ):Response<CreateTreeResponse>
+
+    @GET(value = "tree/get-all-tree-group-by-tree-type")
+    suspend fun getAllTreeGroupByTreeType(
+        @Header(value = "Authorization") bearerToken: String,
+    ):Response<GetAllTreeGroupByTreeTypeResponse>
+
+    @PUT(value = "tree/update-tree")
+    suspend fun updateTree(
+        @Header(value = "Authorization") bearerToken: String,
+        @Query(value = "uuidTree") uuidTree:String,
+        @Body request:UpdateTreeRequest
+    ):Response<UpdateTreeResponse>
+
+    /**
+     * Bill
+     */
 }

@@ -2,6 +2,7 @@ package com.l3azh.bonsaiapp.View
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -67,7 +68,7 @@ fun AdminTreeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    if(!adminTreeViewModel.state.value.isLoading.value){
+                    if (!adminTreeViewModel.state.value.isLoading.value) {
                         adminTreeViewModel.resetState()
                         navHostController.navigate(BonsaiNavigationTag.AdminAddTreeScree.name)
                     }
@@ -105,9 +106,16 @@ fun AdminTreeScreen(
                     items(adminTreeViewModel.state.value.listTree.value) { tree ->
                         Row(
                             verticalAlignment = Alignment.Top,
-                            modifier = Modifier.padding(8.dp)
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .clickable {
+                                    adminTreeViewModel.resetState()
+                                    navHostController.navigate(
+                                        "${BonsaiNavigationTag.AdminTreeDetailScreen.name}/${tree.uuid}"
+                                    )
+                                }
                         ) {
-                            if(tree.picture == null){
+                            if (tree.picture == null) {
                                 Image(
                                     painter = painterResource(id = R.drawable.ic_bs_tree),
                                     contentDescription = "Picture",
@@ -155,7 +163,7 @@ fun AdminTreeScreen(
             }
         }
     }
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         adminTreeViewModel.initData(context)
     }
 }

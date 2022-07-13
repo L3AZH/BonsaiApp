@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.l3azh.bonsaiapp.MainActivity
 import com.l3azh.bonsaiapp.R
 import com.l3azh.bonsaiapp.View.UserMainScreen
 
@@ -27,15 +28,19 @@ enum class BonsaiBottomNavigationTag(val nameScreen: String, val title: String, 
 @Composable
 fun BonsaiBottomNavHost(
     navHostController: NavHostController,
+    navBottomHostController: NavHostController,
     modifier: Modifier
 ) {
     val context = LocalContext.current
     NavHost(
-        navController = navHostController,
+        navController = navBottomHostController,
         startDestination = BonsaiBottomNavigationTag.UserMainScreen.name
     ) {
         composable(BonsaiBottomNavigationTag.UserMainScreen.name) {
-            UserMainScreen()
+            UserMainScreen(
+                (context as MainActivity).userMainViewModel,
+                navBottomHostController = navBottomHostController,
+                navHostController = navHostController)
         }
         composable(BonsaiBottomNavigationTag.UserSearchScreen.name) {
         }

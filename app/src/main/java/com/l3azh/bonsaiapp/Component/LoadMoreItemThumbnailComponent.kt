@@ -1,6 +1,7 @@
 package com.l3azh.bonsaiapp.Component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -16,12 +17,15 @@ import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 import com.l3azh.bonsaiapp.ui.theme.White
 
 @Composable
-fun LoadMoreItemThumbnailComponent() {
+fun LoadMoreItemThumbnailComponent(
+    onClick:()->Unit
+) {
     Box(modifier = Modifier.size(150.dp), contentAlignment = Alignment.Center) {
         Card(
             shape = RoundedCornerShape(10),
             elevation = 10.dp,
-            backgroundColor = White
+            backgroundColor = White,
+            modifier = Modifier.clickable { onClick() }
         ) {
             Box(modifier = Modifier.wrapContentSize(), contentAlignment = Alignment.Center) {
                 Column(
@@ -47,6 +51,6 @@ fun LoadMoreItemThumbnailComponent() {
 @Composable
 fun PreviewLoadMoreThumbnail() {
     BonsaiAppTheme {
-        LoadMoreItemThumbnailComponent()
+        LoadMoreItemThumbnailComponent({})
     }
 }

@@ -14,28 +14,50 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.l3azh.bonsaiapp.Model.TreeState
+import com.l3azh.bonsaiapp.Model.TreeTypeState
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 
 @Composable
-fun TreeTypeThumbnailComponent(name:String){
+fun TreeTypeThumbnailComponent(
+    treeType: TreeTypeState,
+    listTree: List<TreeState>,
+    onLoadMoreClick: (String) -> Unit
+) {
     Column(modifier = Modifier.fillMaxWidth(1f)) {
-        Text(text = name, style = MaterialTheme.typography.caption.copy(
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        ), modifier = Modifier.padding(vertical = 20.dp, horizontal = 15.dp))
-        Row (modifier = Modifier.horizontalScroll(rememberScrollState())){
-            for (i in 1..5){
-                TreeThumbnailComponent(name = "test", price = "test1")
+        Text(
+            text = treeType.name, style = MaterialTheme.typography.caption.copy(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            ), modifier = Modifier.padding(vertical = 20.dp, horizontal = 15.dp)
+        )
+        Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+            if (listTree.size > 5) {
+                for (index in 0..4) {
+                    TreeThumbnailComponent(
+                        name = listTree[index].name,
+                        price = listTree[index].price.toString(),
+                        picture = listTree[index].picture
+                    )
+                }
+                LoadMoreItemThumbnailComponent(onClick = { onLoadMoreClick(treeType.uuid) })
+            } else {
+                for (tree in listTree) {
+                    TreeThumbnailComponent(
+                        name = tree.name,
+                        price = tree.price.toString(),
+                        picture = tree.picture
+                    )
+                }
             }
-            LoadMoreItemThumbnailComponent()
         }
     }
 }
 
 @Composable
 @Preview
-fun PreviewTreeTypeThumbnailComponent(){
+fun PreviewTreeTypeThumbnailComponent() {
     BonsaiAppTheme {
-        TreeTypeThumbnailComponent("TEst123")
+        //TreeTypeThumbnailComponent("TEst123")
     }
 }

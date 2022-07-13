@@ -1,7 +1,6 @@
 package com.l3azh.bonsaiapp.Navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -11,9 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.gson.Gson
 import com.l3azh.bonsaiapp.MainActivity
+import com.l3azh.bonsaiapp.Model.TreeState
+import com.l3azh.bonsaiapp.Model.TreeStateForNavigation
 import com.l3azh.bonsaiapp.Model.TreeTypeState
 import com.l3azh.bonsaiapp.View.*
-import com.l3azh.bonsaiapp.ViewModel.AdminTreeTypeDetailState
 
 enum class BonsaiNavigationTag(nameScreen: String) {
     SplashScreen("SplashScreen"),
@@ -21,15 +21,19 @@ enum class BonsaiNavigationTag(nameScreen: String) {
     RegisterScreen("RegisterScreen"),
     AdminMainMenuScreen("AdminMainMenuScreen"),
     UserMainMenuScreen("UserMainMenuScreen"),
+    InfoAccountScreen("InfoAccountScreen"),
 
     AdminTreeTypeScreen("AdminTreeTypeScreen"),
     AdminTreeTypeDetailScreen("AdminTreeTypeDetailScreen"),
     AdminAddTreeTypeScreen("AdminAddTreeTypeScreen"),
 
     AdminTreeScreen("AdminTreeScreen"),
+    AdminTreeDetailScreen("AdminTreeDetailScreen"),
     AdminAddTreeScree("AdminAddTreeScree"),
 
-    AdminBillScreen("AdminBillScreen")
+    AdminBillScreen("AdminBillScreen"),
+
+    AdminCreateAccountScreen("AdminCreateAccountScreen")
 }
 
 @Composable
@@ -54,8 +58,11 @@ fun BonsaiNavHost(
         composable(BonsaiNavigationTag.RegisterScreen.name) {
             RegisterScreen((context as MainActivity).registerViewModel, navHostController)
         }
+        composable(BonsaiNavigationTag.InfoAccountScreen.name) {
+            InfoAccountScreen()
+        }
         composable(BonsaiNavigationTag.UserMainMenuScreen.name) {
-            UserMainMenuScreen()
+            UserMainMenuScreen(navHostController)
         }
         composable(BonsaiNavigationTag.AdminMainMenuScreen.name) {
             AdminMainScreen((context as MainActivity).adminMainMenuViewModel, navHostController)
@@ -83,16 +90,37 @@ fun BonsaiNavHost(
         }
         composable(
             "${BonsaiNavigationTag.AdminTreeTypeDetailScreen.name}/{treeTypeDetailInfo}",
-            arguments = listOf(navArgument("treeTypeDetailInfo"){
+            arguments = listOf(navArgument("treeTypeDetailInfo") {
                 type = NavType.StringType
             })
-        ){
+        ) {
             val treeTypeDetailInfo =
-                Gson().fromJson(it.arguments!!.getString("treeTypeDetailInfo"), TreeTypeState::class.java)
+                Gson().fromJson(
+                    it.arguments!!.getString("treeTypeDetailInfo"),
+                    TreeTypeState::class.java
+                )
             AdminTreeTypeDetailScreen(
                 (context as MainActivity).adminTreeTypeDetailViewModel.apply {
                     this.initState(treeTypeDetailInfo)
                 },
+                navHostController
+            )
+        }
+        composable(
+            "${BonsaiNavigationTag.AdminTreeDetailScreen.name}/{uuidTree}",
+            arguments = listOf(navArgument("uuidTree") {
+                type = NavType.StringType
+            })
+        ) {
+            AdminTreeDetailScreen(
+                it.arguments!!.getString("uuidTree")!!,
+                (context as MainActivity).adminTreeDetailViewModel,
+                navHostController
+            )
+        }
+        composable(BonsaiNavigationTag.AdminCreateAccountScreen.name) {
+            AdminCreateAccountScreen(
+                (context as MainActivity).adminCreateAccountViewModel,
                 navHostController
             )
         }

@@ -109,6 +109,8 @@ fun AdminMainScreen(
                                                     .navigate(BonsaiNavigationTag.AdminBillScreen.name)
                                                 "TreeType" -> navHostController!!
                                                     .navigate(BonsaiNavigationTag.AdminTreeTypeScreen.name)
+                                                "Account" -> navHostController!!
+                                                    .navigate(BonsaiNavigationTag.AdminCreateAccountScreen.name)
                                             }
                                         }
                                 )
@@ -118,10 +120,10 @@ fun AdminMainScreen(
             }
         }
     }
-    if(adminMainMenuViewModel.state.value.onPickAndCaptureImage.value){
+    if (adminMainMenuViewModel.state.value.onPickAndCaptureImage.value) {
         ChoosePickOrCaptureImageDialog(
             isShow = true,
-            onClose = { adminMainMenuViewModel.state.value.closeDialogPickAndCaptureImage()},
+            onClose = { adminMainMenuViewModel.state.value.closeDialogPickAndCaptureImage() },
             nameScreen = navHostController!!.currentBackStackEntry!!.destination.route!!,
             onBitmapGotFromChooseOrCapture = { bitmap ->
                 adminMainMenuViewModel.state.value.updateImageAccountInfo(bitmap)

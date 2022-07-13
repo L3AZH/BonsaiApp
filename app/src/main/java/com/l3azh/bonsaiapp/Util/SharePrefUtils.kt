@@ -7,9 +7,9 @@ class SharePrefUtils {
     companion object{
         fun saveTokenToPref(context: Context, token:String){
             val pref = context.getSharedPreferences(Constant.SHARE_PREF_NAME, Context.MODE_PRIVATE)
-            val editer = pref.edit()
-            editer.putString(Constant.TOKEN_FIELD, token)
-            editer.apply()
+            val editor = pref.edit()
+            editor.putString(Constant.TOKEN_FIELD, token)
+            editor.apply()
         }
 
         fun getBearerToken(context: Context):String{
@@ -19,9 +19,9 @@ class SharePrefUtils {
 
         fun saveEmailToPref(context: Context, email:String){
             val pref = context.getSharedPreferences(Constant.SHARE_PREF_NAME, Context.MODE_PRIVATE)
-            val editer = pref.edit()
-            editer.putString(Constant.EMAIL_FIELD, email)
-            editer.apply()
+            val editor = pref.edit()
+            editor.putString(Constant.EMAIL_FIELD, email)
+            editor.apply()
         }
 
         fun getEmail(context: Context):String{
@@ -31,9 +31,9 @@ class SharePrefUtils {
 
         fun saveRoleToPref(context: Context, role:String){
             val pref = context.getSharedPreferences(Constant.SHARE_PREF_NAME, Context.MODE_PRIVATE)
-            val editer = pref.edit()
-            editer.putString(Constant.ROLE_FIELD, role)
-            editer.apply()
+            val editor = pref.edit()
+            editor.putString(Constant.ROLE_FIELD, role)
+            editor.apply()
         }
 
         fun getRole(context: Context):String{
