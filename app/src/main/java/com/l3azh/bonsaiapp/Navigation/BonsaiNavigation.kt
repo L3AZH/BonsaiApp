@@ -59,7 +59,10 @@ fun BonsaiNavHost(
             RegisterScreen((context as MainActivity).registerViewModel, navHostController)
         }
         composable(BonsaiNavigationTag.InfoAccountScreen.name) {
-            InfoAccountScreen()
+            InfoAccountScreen(
+                (context as MainActivity).infoAccountViewModel,
+                navHostController
+            )
         }
         composable(BonsaiNavigationTag.UserMainMenuScreen.name) {
             UserMainMenuScreen(navHostController)

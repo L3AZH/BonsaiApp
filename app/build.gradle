@@ -71,6 +71,7 @@ dependencies {
     def nav_version = "2.4.2"
     def retrofit_version = "2.9.0"
     def okhttp3_version = "4.9.1"
+    def room_version = "2.4.2"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
@@ -97,6 +98,9 @@ dependencies {
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    //Room Database
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 }
 
 def readKeyFromLocalProperties(String keyName) {

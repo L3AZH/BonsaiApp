@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,9 +26,20 @@ import com.l3azh.bonsaiapp.ui.theme.*
 @Composable
 fun ChangePasswordDialog(
     isShow: Boolean,
+    oldPassword:String,
     onClose: () -> Unit,
     onUpdate: (String) -> Unit
 ) {
+    val currentPassword = remember {
+        mutableStateOf("")
+    }
+    val newPassword = remember {
+         mutableStateOf("")
+    }
+    val confirmNewPassword = remember {
+        mutableStateOf("")
+    }
+
     if (isShow) {
         Box(
             modifier = Modifier
@@ -63,8 +75,8 @@ fun ChangePasswordDialog(
                         )
                     }
                     BonsaiTextField(
-                        value = "",
-                        onValueChange = { },
+                        value = currentPassword.value,
+                        onValueChange = { currentPassword.value = it },
                         keyboardType = KeyboardType.Password,
                         modifier = Modifier
                             .fillMaxWidth(1f)
@@ -85,8 +97,8 @@ fun ChangePasswordDialog(
                         }
                     )
                     BonsaiTextField(
-                        value = "",
-                        onValueChange = { },
+                        value = newPassword.value,
+                        onValueChange = { newPassword.value = it },
                         keyboardType = KeyboardType.Password,
                         modifier = Modifier
                             .fillMaxWidth(1f)
@@ -107,8 +119,8 @@ fun ChangePasswordDialog(
                         }
                     )
                     BonsaiTextField(
-                        value = "",
-                        onValueChange = { },
+                        value = confirmNewPassword.value,
+                        onValueChange = { confirmNewPassword.value = it},
                         keyboardType = KeyboardType.Password,
                         modifier = Modifier
                             .fillMaxWidth(1f)
@@ -150,7 +162,9 @@ fun ChangePasswordDialog(
                             )
                         }
                         Button(
-                            onClick = { onClose() },
+                            onClick = {
+                                onUpdate(confirmNewPassword.value)
+                                      },
                             shape = RoundedCornerShape(30.dp),
                             colors = ButtonDefaults.buttonColors(backgroundColor = GrayLight),
                             modifier = Modifier.width(100.dp)
@@ -174,6 +188,6 @@ fun ChangePasswordDialog(
 @Preview
 fun PreviewChangePasswordDialog() {
     BonsaiAppTheme {
-        ChangePasswordDialog(true, {}, {})
+        //ChangePasswordDialog(true, {}, {})
     }
 }
