@@ -2,6 +2,7 @@ package com.l3azh.bonsaiapp.Component
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -25,9 +26,14 @@ import com.l3azh.bonsaiapp.ui.theme.White
 fun TreeThumbnailComponent(
     name: String,
     price: String,
-    picture: Bitmap? = null
+    picture: Bitmap? = null,
+    onClick: () -> Unit
 ) {
-    Box(modifier = Modifier.size(150.dp), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier
+        .size(150.dp)
+        .clickable {
+            onClick()
+        }, contentAlignment = Alignment.Center) {
         Card(
             shape = RoundedCornerShape(10),
             elevation = 10.dp,
@@ -81,6 +87,6 @@ fun TreeThumbnailComponent(
 @Preview
 fun PreviewTreThumbnailComponent() {
     BonsaiAppTheme {
-        TreeThumbnailComponent(name = "testasd", price = "12315")
+        TreeThumbnailComponent(name = "testasd", price = "12315", onClick = {})
     }
 }

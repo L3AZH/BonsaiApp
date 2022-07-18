@@ -10,8 +10,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.gson.Gson
 import com.l3azh.bonsaiapp.MainActivity
-import com.l3azh.bonsaiapp.Model.TreeState
-import com.l3azh.bonsaiapp.Model.TreeStateForNavigation
 import com.l3azh.bonsaiapp.Model.TreeTypeState
 import com.l3azh.bonsaiapp.View.*
 
@@ -22,6 +20,9 @@ enum class BonsaiNavigationTag(nameScreen: String) {
     AdminMainMenuScreen("AdminMainMenuScreen"),
     UserMainMenuScreen("UserMainMenuScreen"),
     InfoAccountScreen("InfoAccountScreen"),
+
+    UserListTreeByTreeTypeScreen("UserListTreeByTreeTypeScreen"),
+    UserTreeInfoScreen("UserTreeInfoScreen"),
 
     AdminTreeTypeScreen("AdminTreeTypeScreen"),
     AdminTreeTypeDetailScreen("AdminTreeTypeDetailScreen"),
@@ -66,6 +67,30 @@ fun BonsaiNavHost(
         }
         composable(BonsaiNavigationTag.UserMainMenuScreen.name) {
             UserMainMenuScreen(navHostController)
+        }
+        composable(
+            "${BonsaiNavigationTag.UserListTreeByTreeTypeScreen.name}/{uuidTreeType}",
+            arguments = listOf(navArgument(name = "uuidTreeType") {
+                type = NavType.StringType
+            })
+        ) {
+            UserListTreeByTypeScreen(
+                uuidTreeType = it.arguments!!.getString("uuidTreeType")!!,
+                userListTreeByTypeViewModel = (context as MainActivity).userListTreeByTypeViewModel,
+                navHostController = navHostController
+            )
+        }
+        composable(
+            "${BonsaiNavigationTag.UserTreeInfoScreen.name}/{uuidTree}", arguments = listOf(
+                navArgument("uuidTree") {
+                    type = NavType.StringType
+                })
+        ) {
+            UserTreeInfoScreen(
+                uuidTree = it.arguments!!.getString("uuidTree")!!,
+                userTreeInfoViewModel =(context as MainActivity).userTreeInfoViewModel,
+                navHostController = navHostController
+            )
         }
         composable(BonsaiNavigationTag.AdminMainMenuScreen.name) {
             AdminMainScreen((context as MainActivity).adminMainMenuViewModel, navHostController)

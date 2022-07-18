@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.l3azh.bonsaiapp.Component.InfoAccountComponent
 import com.l3azh.bonsaiapp.Component.TreeTypeThumbnailComponent
-import com.l3azh.bonsaiapp.Dialog.ChoosePickOrCaptureImageDialog
 import com.l3azh.bonsaiapp.Dialog.InformDialog
 import com.l3azh.bonsaiapp.Dialog.LoadingDialog
 import com.l3azh.bonsaiapp.Navigation.BonsaiNavigationTag
@@ -22,11 +21,13 @@ fun UserMainScreen(
     userMainViewModel: UserMainViewModel,
     navBottomHostController: NavHostController,
     navHostController: NavHostController,
-){
+) {
     val context = LocalContext.current
     Box(modifier = Modifier.fillMaxSize(1f)) {
-        LazyColumn(modifier = Modifier
-            .fillMaxSize(1f),){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(1f),
+        ) {
             item {
                 InfoAccountComponent(
                     name = userMainViewModel.state.value.accountInfo.value.lastName,
@@ -38,16 +39,19 @@ fun UserMainScreen(
                         userMainViewModel.state.value.openDialogPickAndCaptureImage()
                     })
             }
-            items(userMainViewModel.state.value.listTreeByTreeType.value){ treeByType ->
+            items(userMainViewModel.state.value.listTreeByTreeType.value) { treeByType ->
                 TreeTypeThumbnailComponent(
                     treeType = treeByType.treeType,
                     listTree = treeByType.listTree,
                     onLoadMoreClick = { uuidTreeType ->
-
+                        navHostController.navigate("${BonsaiNavigationTag.UserListTreeByTreeTypeScreen.name}/${uuidTreeType}")
+                    },
+                    onTreeClick = { uuidTree ->
+                        navHostController.navigate("${BonsaiNavigationTag.UserTreeInfoScreen.name}/${uuidTree}")
                     }
                 )
             }
-            item { 
+            item {
                 Spacer(modifier = Modifier.height(100.dp))
             }
         }
@@ -69,10 +73,10 @@ fun UserMainScreen(
             )
         }
     }
-    if(userMainViewModel.state.value.onPickAndCaptureImage.value){
+    if (userMainViewModel.state.value.onPickAndCaptureImage.value) {
         navHostController.navigate(BonsaiNavigationTag.InfoAccountScreen.name)
     }
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         userMainViewModel.initData(context)
     }
 }

@@ -82,6 +82,12 @@ interface BonsaiApi {
         @Header(value = "Authorization") bearerToken: String,
     ):Response<GetAllTreeGroupByTreeTypeResponse>
 
+    @GET(value = "tree/get-tree-group-by-tree-type")
+    suspend fun getTreeGroupByTreeType(
+        @Header(value = "Authorization") bearerToken: String,
+        @Query(value = "uuidTreeType") uuidTreeType: String
+    ):Response<GetTreeGroupByTreeTypeResponse>
+
     @PUT(value = "tree/update-tree")
     suspend fun updateTree(
         @Header(value = "Authorization") bearerToken: String,

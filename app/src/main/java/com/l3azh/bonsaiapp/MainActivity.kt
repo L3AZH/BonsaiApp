@@ -32,6 +32,8 @@ class MainActivity : ComponentActivity() {
     val adminTreeDetailViewModel:AdminTreeDetailViewModel by viewModels()
     val adminCreateAccountViewModel:AdminCreateAccountViewModel by viewModels()
     val userMainViewModel:UserMainViewModel by viewModels()
+    val userListTreeByTypeViewModel:UserListTreeByTypeViewModel by viewModels()
+    val userTreeInfoViewModel:UserTreeInfoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

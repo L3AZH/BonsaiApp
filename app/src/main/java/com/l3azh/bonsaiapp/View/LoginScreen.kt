@@ -134,12 +134,9 @@ fun LoginScreen(
                                 SharePrefUtils.saveEmailToPref(context, email)
                                 SharePrefUtils.saveRoleToPref(context, role)
                                 if (Constant.USER_ROLE.equals(role)){
-                                    navHostController!!.navigate(BonsaiNavigationTag.AdminMainMenuScreen.name){
+                                    navHostController!!.navigate(BonsaiNavigationTag.UserMainMenuScreen.name){
                                         navHostController.popBackStack()
                                     }
-                                    /*navHostController!!.navigate(BonsaiNavigationTag.UserMainMenuScreen.name){
-                                        navHostController.popBackStack()
-                                    }*/
                                 } else {
                                     navHostController!!.navigate(BonsaiNavigationTag.AdminMainMenuScreen.name){
                                         navHostController.popBackStack()

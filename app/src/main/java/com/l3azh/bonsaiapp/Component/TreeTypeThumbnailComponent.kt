@@ -22,7 +22,8 @@ import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 fun TreeTypeThumbnailComponent(
     treeType: TreeTypeState,
     listTree: List<TreeState>,
-    onLoadMoreClick: (String) -> Unit
+    onLoadMoreClick: (String) -> Unit,
+    onTreeClick:(String) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth(1f)) {
         Text(
@@ -37,7 +38,10 @@ fun TreeTypeThumbnailComponent(
                     TreeThumbnailComponent(
                         name = listTree[index].name,
                         price = listTree[index].price.toString(),
-                        picture = listTree[index].picture
+                        picture = listTree[index].picture,
+                        onClick = {
+                            onTreeClick(listTree[index].uuid)
+                        }
                     )
                 }
                 LoadMoreItemThumbnailComponent(onClick = { onLoadMoreClick(treeType.uuid) })
@@ -46,7 +50,10 @@ fun TreeTypeThumbnailComponent(
                     TreeThumbnailComponent(
                         name = tree.name,
                         price = tree.price.toString(),
-                        picture = tree.picture
+                        picture = tree.picture,
+                        onClick = {
+                            onTreeClick(tree.uuid)
+                        }
                     )
                 }
             }
