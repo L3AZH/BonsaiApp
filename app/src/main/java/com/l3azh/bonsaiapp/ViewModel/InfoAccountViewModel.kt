@@ -16,26 +16,26 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class InfoAccountState(
-    var email:MutableState<String> = mutableStateOf(""),
-    var firstName:MutableState<String> = mutableStateOf(""),
-    var lastName:MutableState<String> = mutableStateOf(""),
-    var phoneNumber:MutableState<String> = mutableStateOf(""),
-    var avatar:MutableState<Bitmap?> = mutableStateOf(null),
-    var isUpdateSuccess:MutableState<Boolean> = mutableStateOf(false),
+    var email: MutableState<String> = mutableStateOf(""),
+    var firstName: MutableState<String> = mutableStateOf(""),
+    var lastName: MutableState<String> = mutableStateOf(""),
+    var phoneNumber: MutableState<String> = mutableStateOf(""),
+    var avatar: MutableState<Bitmap?> = mutableStateOf(null),
+    var isUpdateSuccess: MutableState<Boolean> = mutableStateOf(false),
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
     var onPickAndCaptureImage: MutableState<Boolean> = mutableStateOf(false),
     var errorMessage: MutableState<String> = mutableStateOf(""),
     var onError: MutableState<Boolean> = mutableStateOf(false),
-){
-    fun openDialogPickAndCaptureImage(){
+) {
+    fun openDialogPickAndCaptureImage() {
         onPickAndCaptureImage.value = true
     }
 
-    fun closeDialogPickAndCaptureImage(){
+    fun closeDialogPickAndCaptureImage() {
         onPickAndCaptureImage.value = false
     }
 
-    fun updateStateImageChoose(bitmap: Bitmap){
+    fun updateStateImageChoose(bitmap: Bitmap) {
         avatar.value = bitmap
     }
 }
@@ -43,11 +43,11 @@ data class InfoAccountState(
 @HiltViewModel
 class InfoAccountViewModel @Inject constructor(
     private val accountRepository: AccountRepository
-) : ViewModel(){
+) : ViewModel() {
 
     var state = mutableStateOf(InfoAccountState())
 
-    fun resetState(){
+    fun resetState() {
         state = mutableStateOf(InfoAccountState())
     }
 
@@ -64,7 +64,10 @@ class InfoAccountViewModel @Inject constructor(
                         state.value.firstName.value = infoAccountResponse.data.firstName
                         state.value.lastName.value = infoAccountResponse.data.lastName
                         state.value.phoneNumber.value = infoAccountResponse.data.phoneNumber
-                        state.value.avatar.value = BonsaiAppUtils.getBitmapFromStringData(infoAccountResponse.data.avatar)
+                        state.value.avatar.value =
+                            if (infoAccountResponse.data.avatar.isBlank() ||
+                                infoAccountResponse.data.avatar.isEmpty()) null
+                            else BonsaiAppUtils.getBitmapFromStringData(infoAccountResponse.data.avatar)
                     }
                 },
                 onError = { bonsaiErrorResponse ->

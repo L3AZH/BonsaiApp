@@ -3,7 +3,9 @@ package com.l3azh.bonsaiapp.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,9 +34,6 @@ fun InfoAccountScreen(
     infoAccountViewModel: InfoAccountViewModel,
     navHostController: NavHostController
 ) {
-    /*var onOpenChangePassword = remember {
-        mutableStateOf(false)
-    }*/
     val context = LocalContext.current
     Scaffold(
         modifier = Modifier.fillMaxSize(1f),
@@ -45,8 +44,8 @@ fun InfoAccountScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 AppBarBackButton(onClick = {
+                    //infoAccountViewModel.resetState()
                     navHostController.popBackStack()
-                    infoAccountViewModel.resetState()
                 })
                 AppBarSaveButton(onClick = {
                     infoAccountViewModel.updateInfoAccount(context)
@@ -57,7 +56,7 @@ fun InfoAccountScreen(
         Box(
             modifier = Modifier.fillMaxSize(1f)
         ) {
-            Column {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Row(
                     modifier = Modifier.fillMaxWidth(1f),
                     horizontalArrangement = Arrangement.Center
@@ -91,7 +90,7 @@ fun InfoAccountScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(1f)
-                        .padding(start = 32.dp, top = 32.dp)
+                        .padding(start = 32.dp, top = 32.dp, bottom = 32.dp)
                 ) {
                     Text(
                         text = "Email: ", style = MaterialTheme.typography.caption.copy(
@@ -106,36 +105,6 @@ fun InfoAccountScreen(
                         )
                     )
                 }
-                /* Row(
-                     modifier = Modifier
-                         .fillMaxWidth(1f)
-                         .padding(32.dp),
-                     verticalAlignment = Alignment.CenterVertically,
-                     horizontalArrangement = Arrangement.SpaceBetween
-                 ) {
-                     Row {
-                         Text(
-                             text = "Password: ", style = MaterialTheme.typography.caption.copy(
-                                 fontSize = 16.sp,
-                             )
-                         )
-                         Text(
-                             text = "*********", style = MaterialTheme.typography.caption.copy(
-                                 fontSize = 16.sp,
-                                 fontWeight = FontWeight.Bold
-                             )
-                         )
-                     }
-                     Icon(
-                         painter = painterResource(id = R.drawable.ic_bs_edit),
-                         contentDescription = "Edit password",
-                         modifier = Modifier
-                             .size(28.dp)
-                             .clickable {
-                                 onOpenChangePassword.value = true
-                             }
-                     )
-                 }*/
                 BonsaiTextField(
                     value = infoAccountViewModel.state.value.firstName.value,
                     onValueChange = { infoAccountViewModel.state.value.firstName.value = it },
@@ -220,11 +189,12 @@ fun InfoAccountScreen(
             InformDialog(
                 show = true,
                 title = "Success",
-                message = "Add new Tree successful !",
+                message = "Update profile success !",
                 positiveButtonEnable = true,
                 namePositiveButton = "OK",
                 onPositiveClick = { dialogState ->
                     dialogState.value = false
+                    infoAccountViewModel.state.value.isUpdateSuccess.value = false
                 },
             )
         }
@@ -242,15 +212,6 @@ fun InfoAccountScreen(
     LaunchedEffect(key1 = true) {
         infoAccountViewModel.getInfoAccount(context)
     }
-    /*if (onOpenChangePassword.value) {
-        ChangePasswordDialog(
-            isShow = true,
-            oldPassword = "",
-            onClose = { onOpenChangePassword.value = false },
-            onUpdate = { newPassword ->
-
-            })
-    }*/
 }
 
 @Composable

@@ -19,6 +19,6 @@ interface CartDao {
     fun getAllItem(): List<CartEntity>
 
     @Query(value = "SELECT * FROM CartEntity WHERE uuidTree = :uuidTree")
-    fun findItemById(uuidTree: String): CartEntity
+    fun findItemById(uuidTree: String): CartEntity?
 
 }

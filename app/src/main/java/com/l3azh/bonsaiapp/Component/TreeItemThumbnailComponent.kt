@@ -70,7 +70,7 @@ fun TreeThumbnailComponent(
                         modifier = Modifier.padding(5.dp)
                     )
                     Text(
-                        text = price,
+                        text = "$price$",
                         style = MaterialTheme.typography.body1.copy(
                             fontWeight = FontWeight.Bold
                         ),

@@ -37,6 +37,7 @@ val GreenLight = Color(0xFF4aa646)
 val GreenSuperLight = Color(0xFF50e605)
 val DarkBlue900 = Color(0xFF26282F)
 val GrayLight = Color(0xFF949699)
+val GraySuperLight = Color(0xFFf0f0f0)
 val defaultDialogButton = Color(0xFF2686ed)
 val defaultDivider = Color(0xFF7d7c7c)
 

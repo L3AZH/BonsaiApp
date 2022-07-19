@@ -19,4 +19,7 @@ class CartEntity (
     @ColumnInfo
     var uuidType:String,
     @ColumnInfo
-    var nameType:String)
+    var nameType:String,
+    @ColumnInfo
+    var quantity:Int
+)

@@ -3,6 +3,7 @@ package com.l3azh.bonsaiapp.DI
 import android.content.Context
 import androidx.room.Room
 import com.l3azh.bonsaiapp.Db.BonsaiDb
+import com.l3azh.bonsaiapp.Db.Dao.CartDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,4 +24,8 @@ class RoomDatabaseModule {
             "BonsaiDB"
         ).build()
     }
+
+    @Singleton
+    @Provides
+    fun provideCartDao(bonsaiDb: BonsaiDb):CartDao = bonsaiDb.cartDao()
 }

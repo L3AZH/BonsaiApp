@@ -100,6 +100,7 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     //Room Database
     implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 }
 

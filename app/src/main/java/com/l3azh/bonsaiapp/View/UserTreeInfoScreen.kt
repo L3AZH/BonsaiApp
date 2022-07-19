@@ -30,7 +30,7 @@ import com.l3azh.bonsaiapp.ui.theme.White
 
 @Composable
 fun UserTreeInfoScreen(
-    uuidTree:String,
+    uuidTree: String,
     userTreeInfoViewModel: UserTreeInfoViewModel,
     navHostController: NavHostController
 ) {
@@ -50,7 +50,7 @@ fun UserTreeInfoScreen(
         }
     ) {
         Box(modifier = Modifier.fillMaxSize(1f)) {
-            if(userTreeInfoViewModel.state.value.picture.value == null){
+            if (userTreeInfoViewModel.state.value.picture.value == null) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_bs_tree),
                     contentDescription = "",
@@ -92,20 +92,23 @@ fun UserTreeInfoScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Type: ${userTreeInfoViewModel.state.value.treeType.value}", style = MaterialTheme.typography.caption.copy(
+                        text = "Type: ${userTreeInfoViewModel.state.value.treeTypeName.value}",
+                        style = MaterialTheme.typography.caption.copy(
                             fontSize = 16.sp,
 
-                        )
+                            )
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Description: \n - ${userTreeInfoViewModel.state.value.description.value}", style = MaterialTheme.typography.caption.copy(
+                        text = "Description: \n - ${userTreeInfoViewModel.state.value.description.value}",
+                        style = MaterialTheme.typography.caption.copy(
                             fontSize = 16.sp,
                         )
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                        text = "Price: ${userTreeInfoViewModel.state.value.price.value}", style = MaterialTheme.typography.caption.copy(
+                        text = "Price: ${userTreeInfoViewModel.state.value.price.value}$",
+                        style = MaterialTheme.typography.caption.copy(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -118,7 +121,9 @@ fun UserTreeInfoScreen(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         OutlinedButton(
-                            onClick = {  }, shape = RoundedCornerShape(20.dp),
+                            onClick = {
+                                userTreeInfoViewModel.addToCart()
+                            }, shape = RoundedCornerShape(20.dp),
                             colors = ButtonDefaults.buttonColors(backgroundColor = White)
                         ) {
                             Text(
@@ -149,9 +154,22 @@ fun UserTreeInfoScreen(
                     }
                 )
             }
+            if (userTreeInfoViewModel.state.value.onAddToCartSuccess.value) {
+                InformDialog(
+                    show = true,
+                    title = "Success",
+                    message = "Add to Cart Success !",
+                    positiveButtonEnable = true,
+                    namePositiveButton = "OK",
+                    onPositiveClick = { dialogState ->
+                        dialogState.value = false
+                        userTreeInfoViewModel.state.value.onAddToCartSuccess.value = false
+                    },
+                )
+            }
         }
     }
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         userTreeInfoViewModel.getTreeInfo(context, uuidTree)
     }
 }

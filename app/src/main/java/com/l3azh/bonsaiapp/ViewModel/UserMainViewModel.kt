@@ -31,22 +31,9 @@ data class UserMainState(
     ),
     var listTreeByTreeType: MutableState<List<TreeByTreeTypeState>> = mutableStateOf(listOf()),
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
-    var onPickAndCaptureImage: MutableState<Boolean> = mutableStateOf(false),
     var errorMessage: MutableState<String> = mutableStateOf(""),
     var onError: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    fun openDialogPickAndCaptureImage() {
-        onPickAndCaptureImage.value = true
-    }
-
-    fun closeDialogPickAndCaptureImage() {
-        onPickAndCaptureImage.value = false
-    }
-
-    fun updateImageAccountInfo(bitmap: Bitmap) {
-        accountInfo.value.avatar = bitmap
-        accountInfo.value = accountInfo.value.copy()
-    }
 }
 
 @HiltViewModel

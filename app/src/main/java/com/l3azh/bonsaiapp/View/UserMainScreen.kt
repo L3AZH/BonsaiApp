@@ -36,7 +36,7 @@ fun UserMainScreen(
                     avatar = userMainViewModel.state.value.accountInfo.value.avatar,
                     modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
                     onImageUpdate = {
-                        userMainViewModel.state.value.openDialogPickAndCaptureImage()
+                        navHostController.navigate(BonsaiNavigationTag.InfoAccountScreen.name)
                     })
             }
             items(userMainViewModel.state.value.listTreeByTreeType.value) { treeByType ->
@@ -72,9 +72,6 @@ fun UserMainScreen(
                 }
             )
         }
-    }
-    if (userMainViewModel.state.value.onPickAndCaptureImage.value) {
-        navHostController.navigate(BonsaiNavigationTag.InfoAccountScreen.name)
     }
     LaunchedEffect(key1 = true) {
         userMainViewModel.initData(context)

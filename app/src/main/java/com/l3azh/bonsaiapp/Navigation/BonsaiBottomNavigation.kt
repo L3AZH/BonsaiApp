@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.l3azh.bonsaiapp.MainActivity
 import com.l3azh.bonsaiapp.R
+import com.l3azh.bonsaiapp.View.UserCartScreen
 import com.l3azh.bonsaiapp.View.UserMainScreen
 
 enum class BonsaiBottomNavigationTag(val nameScreen: String, val title: String, val icon: Int) {
@@ -45,6 +46,11 @@ fun BonsaiBottomNavHost(
         composable(BonsaiBottomNavigationTag.UserSearchScreen.name) {
         }
         composable(BonsaiBottomNavigationTag.UserCartScreen.name) {
+            UserCartScreen(
+                userCartViewModel = (context as MainActivity).userCartViewModel,
+                navHostController = navHostController,
+                navBottomHostController = navBottomHostController
+            )
         }
     }
 }

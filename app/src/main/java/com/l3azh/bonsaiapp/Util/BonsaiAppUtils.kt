@@ -61,5 +61,9 @@ class BonsaiAppUtils {
             dataBitmap.compress(Bitmap.CompressFormat.JPEG, 90, dataByteArrayResult)
             return dataByteArrayResult.toByteArray()
         }
+
+        fun formatDoubleNumber(number:Double):String{
+            return String.format("%.2f", number)
+        }
     }
 }
