@@ -28,6 +28,7 @@ fun BonsaiBottomNavigationComponent(
     val items = listOf(
         BonsaiBottomNavigationTag.UserMainScreen,
         BonsaiBottomNavigationTag.UserSearchScreen,
+        BonsaiBottomNavigationTag.UserBillScreen,
         BonsaiBottomNavigationTag.UserCartScreen,
     )
     Card(

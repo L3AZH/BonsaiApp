@@ -20,6 +20,7 @@ enum class BonsaiNavigationTag(nameScreen: String) {
     AdminMainMenuScreen("AdminMainMenuScreen"),
     UserMainMenuScreen("UserMainMenuScreen"),
     InfoAccountScreen("InfoAccountScreen"),
+    BillDetailScreen("BillDetailScreen"),
 
     UserListTreeByTreeTypeScreen("UserListTreeByTreeTypeScreen"),
     UserTreeInfoScreen("UserTreeInfoScreen"),
@@ -69,6 +70,18 @@ fun BonsaiNavHost(
             UserMainMenuScreen(navHostController)
         }
         composable(
+            "${BonsaiNavigationTag.BillDetailScreen.name}/{uuidBill}", arguments = listOf(
+                navArgument("uuidBill") {
+                    type = NavType.StringType
+                })
+        ) {
+            BillDetailScreen(
+                uuidBill = it.arguments!!.getString("uuidBill")!!,
+                billDetailViewModel = (context as MainActivity).billDetailViewModel,
+                navHostController = navHostController
+            )
+        }
+        composable(
             "${BonsaiNavigationTag.UserListTreeByTreeTypeScreen.name}/{uuidTreeType}",
             arguments = listOf(navArgument(name = "uuidTreeType") {
                 type = NavType.StringType
@@ -88,7 +101,7 @@ fun BonsaiNavHost(
         ) {
             UserTreeInfoScreen(
                 uuidTree = it.arguments!!.getString("uuidTree")!!,
-                userTreeInfoViewModel =(context as MainActivity).userTreeInfoViewModel,
+                userTreeInfoViewModel = (context as MainActivity).userTreeInfoViewModel,
                 navHostController = navHostController
             )
         }

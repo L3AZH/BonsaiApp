@@ -56,7 +56,9 @@ fun UserCartScreen(
                                 fontWeight = FontWeight.Bold
                             )
                         )
-                        Button(onClick = {}, shape = RoundedCornerShape(10.dp)) {
+                        Button(onClick = {
+                            userCartViewModel.state.value.onCheckOut.value = true
+                        }, shape = RoundedCornerShape(10.dp)) {
                             Text(text = "Checkout")
                         }
                     }
@@ -92,6 +94,45 @@ fun UserCartScreen(
                     onTapOutSideDialog = { dialogState ->
                         dialogState.value = false
                         userCartViewModel.state.value.onError.value = false
+                    }
+                )
+            }
+            if (userCartViewModel.state.value.onCheckOut.value) {
+                InformDialog(
+                    show = true,
+                    title = "Confirm",
+                    message = "Are you sure to place an order?",
+                    positiveButtonEnable = true,
+                    negativeButtonEnable = true,
+                    namePositiveButton = "OK",
+                    nameNegativeButton = "Cancel",
+                    onPositiveClick = { dialogState ->
+                        dialogState.value = false
+                        userCartViewModel.state.value.onCheckOut.value = false
+                        userCartViewModel.createBill(context)
+                    },
+                    onNegativeClick = { dialogState ->
+                        dialogState.value = false
+                        userCartViewModel.state.value.onCheckOut.value = false
+                    }
+                )
+            }
+            if (userCartViewModel.state.value.onCreateBillSuccess.value) {
+                InformDialog(
+                    show = true,
+                    title = "Success",
+                    message = "Order Success !",
+                    positiveButtonEnable = true,
+                    namePositiveButton = "OK",
+                    onPositiveClick = { dialogState ->
+                        dialogState.value = false
+                        userCartViewModel.state.value.onCreateBillSuccess.value = false
+                        userCartViewModel.clearCartItem()
+                    },
+                    onTapOutSideDialog = { dialogState ->
+                        dialogState.value = false
+                        userCartViewModel.state.value.onCreateBillSuccess.value = false
+                        userCartViewModel.clearCartItem()
                     }
                 )
             }

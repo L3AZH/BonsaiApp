@@ -35,6 +35,12 @@ class BonsaiAppUtils {
             return df.format(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)))
         }
 
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getDateString(date:Date): String {
+            val df = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+            return df.format(date)
+        }
+
         @JvmStatic
         fun convertBitmapToStringData(bitmap: Bitmap): String {
             var byteArrayOutputStream = ByteArrayOutputStream()

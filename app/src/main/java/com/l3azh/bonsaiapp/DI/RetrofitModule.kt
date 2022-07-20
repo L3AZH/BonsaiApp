@@ -1,6 +1,6 @@
 package com.l3azh.bonsaiapp.DI
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.l3azh.bonsaiapp.Api.BonsaiApi
 import com.l3azh.bonsaiapp.BuildConfig
 import dagger.Module
@@ -20,13 +20,13 @@ class RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideLog():HttpLoggingInterceptor{
+    fun provideLog(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
     @Singleton
     @Provides
-    fun provideClient(log:HttpLoggingInterceptor):OkHttpClient{
+    fun provideClient(log: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(log)
             .build()
@@ -34,17 +34,21 @@ class RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(client:OkHttpClient):Retrofit{
+    fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm:ss").create()
+                )
+            )
             .build()
     }
 
     @Singleton
     @Provides
-    fun provideApiImpl(retrofit: Retrofit):BonsaiApi{
+    fun provideApiImpl(retrofit: Retrofit): BonsaiApi {
         return retrofit.create(BonsaiApi::class.java)
     }
 }

@@ -8,14 +8,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.l3azh.bonsaiapp.MainActivity
 import com.l3azh.bonsaiapp.R
+import com.l3azh.bonsaiapp.View.UserBillScreen
 import com.l3azh.bonsaiapp.View.UserCartScreen
 import com.l3azh.bonsaiapp.View.UserMainScreen
 
 enum class BonsaiBottomNavigationTag(val nameScreen: String, val title: String, val icon: Int) {
     UserMainScreen("UserMainScreen", "Main", R.drawable.ic_bs_home),
     UserSearchScreen("UserSearchScreen", "Search", R.drawable.ic_bs_search),
-    UserCartScreen("UerCartScreen", "Cart", R.drawable.ic_bs_shopping_cart);
-
+    UserCartScreen(
+        "UerCartScreen",
+        "Cart",
+        R.drawable.ic_bs_shopping_cart
+    ),
+    UserBillScreen("UserBillScreen", "Bill", R.drawable.ic_bs_note);
 
     fun getTitleValue(): String {
         return title
@@ -41,13 +46,21 @@ fun BonsaiBottomNavHost(
             UserMainScreen(
                 (context as MainActivity).userMainViewModel,
                 navBottomHostController = navBottomHostController,
-                navHostController = navHostController)
+                navHostController = navHostController
+            )
         }
         composable(BonsaiBottomNavigationTag.UserSearchScreen.name) {
         }
         composable(BonsaiBottomNavigationTag.UserCartScreen.name) {
             UserCartScreen(
                 userCartViewModel = (context as MainActivity).userCartViewModel,
+                navHostController = navHostController,
+                navBottomHostController = navBottomHostController
+            )
+        }
+        composable(BonsaiBottomNavigationTag.UserBillScreen.name){
+            UserBillScreen(
+                userBillViewModel = (context as MainActivity).userBillViewModel,
                 navHostController = navHostController,
                 navBottomHostController = navBottomHostController
             )

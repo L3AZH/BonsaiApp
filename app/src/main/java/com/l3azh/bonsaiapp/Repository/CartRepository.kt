@@ -93,4 +93,19 @@ class CartRepository @Inject constructor(private val cartDao: CartDao) {
             onError(BonsaiErrorResponse.convertFromException(e))
         }
     }
+
+    suspend fun deleteAllItem(
+        listItem: List<CartEntity>,
+        onSuccess: () -> Unit,
+        onError: (BonsaiErrorResponse) -> Unit
+    ) {
+        try {
+            listItem.forEach { cartEntity ->
+                cartDao.deleteItem(cartEntity)
+            }
+            onSuccess()
+        } catch (e: Exception) {
+            onError(BonsaiErrorResponse.convertFromException(e))
+        }
+    }
 }

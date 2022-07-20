@@ -98,4 +98,27 @@ interface BonsaiApi {
     /**
      * Bill
      */
+    @POST(value = "bill/create-bill")
+    suspend fun createBill(
+        @Header(value = "Authorization") bearerToken: String,
+        @Query(value = "email") email:String,
+        @Body request:CreateBillRequest
+    ):Response<CreateBillResponse>
+
+    @GET(value = "bill/get-bill-account")
+    suspend fun getBillOfAccount(
+        @Header(value = "Authorization") bearerToken: String,
+        @Query(value = "email") email: String
+    ):Response<BillOfEmailResponse>
+
+    @GET(value = "bill/get-all-bill")
+    suspend fun getAllBill(
+        @Header(value = "Authorization") bearerToken: String
+    ):Response<AllBillResponse>
+
+    @GET(value = "bill/get-bill-info")
+    suspend fun getBillDetail(
+        @Header(value = "Authorization") bearerToken: String,
+        @Query(value = "uuidBill") uuidBill:String
+    ):Response<BillInfoResponse>
 }
