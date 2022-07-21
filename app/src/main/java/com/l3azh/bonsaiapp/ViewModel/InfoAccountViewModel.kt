@@ -98,7 +98,7 @@ class InfoAccountViewModel @Inject constructor(
             }, onError = { bonsaiErrorResponse ->
                 CoroutineScope(Dispatchers.Main).launch {
                     state.value.isLoading.value = false
-                    state.value.onError.value = false
+                    state.value.onError.value = true
                     state.value.errorMessage.value = bonsaiErrorResponse.errorMessage
                 }
             })

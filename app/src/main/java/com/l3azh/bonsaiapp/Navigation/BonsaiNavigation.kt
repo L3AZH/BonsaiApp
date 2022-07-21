@@ -115,7 +115,7 @@ fun BonsaiNavHost(
             AdminTreeScreen((context as MainActivity).adminTreeViewModel, navHostController)
         }
         composable(BonsaiNavigationTag.AdminBillScreen.name) {
-
+            AdminBillScreen((context as MainActivity).adminBillViewModel, navHostController)
         }
         composable(BonsaiNavigationTag.AdminAddTreeTypeScreen.name) {
             AdminAddTreeTypeScreen(

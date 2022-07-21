@@ -82,7 +82,7 @@ fun AdminMainScreen(
                     avatar = adminMainMenuViewModel.state.value.accountInfo.value.avatar,
                     modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp),
                     onImageUpdate = {
-                        adminMainMenuViewModel.state.value.openDialogPickAndCaptureImage()
+                        navHostController!!.navigate(BonsaiNavigationTag.InfoAccountScreen.name)
                     })
                 LazyVerticalGrid(
                     cells = GridCells.Fixed(2),
@@ -119,16 +119,6 @@ fun AdminMainScreen(
                 }
             }
         }
-    }
-    if (adminMainMenuViewModel.state.value.onPickAndCaptureImage.value) {
-        ChoosePickOrCaptureImageDialog(
-            isShow = true,
-            onClose = { adminMainMenuViewModel.state.value.closeDialogPickAndCaptureImage() },
-            nameScreen = navHostController!!.currentBackStackEntry!!.destination.route!!,
-            onBitmapGotFromChooseOrCapture = { bitmap ->
-                adminMainMenuViewModel.state.value.updateImageAccountInfo(bitmap)
-            }
-        )
     }
     LaunchedEffect(key1 = true) {
         adminMainMenuViewModel.initData(context, SharePrefUtils.getEmail(context))

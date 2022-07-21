@@ -41,6 +41,8 @@ data class AllBillResponseData(
     val uuidBill:String,
     @SerializedName(value = "createDate")
     val createDate: Date,
+    @SerializedName(value = "email")
+    val email:String,
     @SerializedName(value = "listBillDetail")
     val listBillDetail:List<BillDetailOfAllBillResponseData>
 )

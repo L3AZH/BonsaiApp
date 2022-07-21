@@ -12,14 +12,13 @@ import com.l3azh.bonsaiapp.Model.TreeState
 import com.l3azh.bonsaiapp.Model.TreeTypeState
 import com.l3azh.bonsaiapp.Repository.BillRepository
 import com.l3azh.bonsaiapp.Util.BonsaiAppUtils
-import com.l3azh.bonsaiapp.Util.SharePrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class UserBillState(
+data class AdminBillState(
     var listBill: MutableState<List<BillState>> = mutableStateOf(listOf()),
     var isLoading: MutableState<Boolean> = mutableStateOf(false),
     var errorMessage: MutableState<String> = mutableStateOf(""),
@@ -27,25 +26,23 @@ data class UserBillState(
 )
 
 @HiltViewModel
-class UserBillViewModel @Inject constructor(
+class AdminBillViewModel @Inject constructor(
     private val billRepository: BillRepository
-) : ViewModel() {
-
-    var state = mutableStateOf(UserBillState())
+):ViewModel() {
+    var state = mutableStateOf(AdminBillState())
 
     fun resetState(){
-        state = mutableStateOf(UserBillState())
+        state = mutableStateOf(AdminBillState())
     }
 
-    fun getListBillOfUser(context: Context) =
+    fun getAllBill(context: Context) =
         CoroutineScope(Dispatchers.IO).launch {
             CoroutineScope(Dispatchers.Main).launch {
                 state.value.isLoading.value = true
             }
-            billRepository.getListBillOfAccount(
+            billRepository.getAllBill(
                 context,
-                SharePrefUtils.getEmail(context),
-                onSuccess = { billOfEmailResponse ->
+                onSuccess = { allBillReseponse ->
                     CoroutineScope(Dispatchers.Main).launch {
                         state.value.isLoading.value = false
                         val transFormDetail:(BillDetailOfEmailResponseData) -> BillDetailState = {
@@ -74,7 +71,7 @@ class UserBillViewModel @Inject constructor(
                                 listDetail = it.listBillDetail.map(transFormDetail).toList()
                             )
                         }
-                        state.value.listBill.value = billOfEmailResponse.data.listBill.map(transForm).toList()
+                        state.value.listBill.value = allBillReseponse.data.listBill.map(transForm).toList()
                     }
                 },
                 onError = { bonsaiErrorResponse ->

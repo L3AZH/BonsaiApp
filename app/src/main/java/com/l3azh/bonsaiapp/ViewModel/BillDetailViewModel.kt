@@ -77,6 +77,7 @@ class BillDetailViewModel @Inject constructor(
                         state.value.billState.value = BillState(
                             uuidBill = billInfoResponse.data.billInfo.uuidBill,
                             createDate = billInfoResponse.data.billInfo.createDate,
+                            email = billInfoResponse.data.billInfo.email,
                             listDetail = billInfoResponse.data.billInfo.listBillDetail.map(
                                 transFormDetail
                             ).toList()

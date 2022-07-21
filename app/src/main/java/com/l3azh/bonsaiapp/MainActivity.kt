@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
     val adminTreeTypeDetailViewModel:AdminTreeTypeDetailViewModel by viewModels()
     val adminTreeDetailViewModel:AdminTreeDetailViewModel by viewModels()
     val adminCreateAccountViewModel:AdminCreateAccountViewModel by viewModels()
+    val adminBillViewModel:AdminBillViewModel by viewModels()
     val userMainViewModel:UserMainViewModel by viewModels()
     val userCartViewModel:UserCartViewModel by viewModels()
     val userBillViewModel:UserBillViewModel by viewModels()

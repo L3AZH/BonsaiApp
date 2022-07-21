@@ -5,6 +5,7 @@ import java.util.*
 data class BillState(
     val uuidBill:String,
     val createDate:Date,
+    val email:String,
     val listDetail:List<BillDetailState>
 ){
     fun getTotal():Double{
