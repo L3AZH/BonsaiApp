@@ -11,6 +11,7 @@ import com.l3azh.bonsaiapp.R
 import com.l3azh.bonsaiapp.View.UserBillScreen
 import com.l3azh.bonsaiapp.View.UserCartScreen
 import com.l3azh.bonsaiapp.View.UserMainScreen
+import com.l3azh.bonsaiapp.View.UserSearchView
 
 enum class BonsaiBottomNavigationTag(val nameScreen: String, val title: String, val icon: Int) {
     UserMainScreen("UserMainScreen", "Main", R.drawable.ic_bs_home),
@@ -50,6 +51,10 @@ fun BonsaiBottomNavHost(
             )
         }
         composable(BonsaiBottomNavigationTag.UserSearchScreen.name) {
+            UserSearchView(
+                userSearchViewModel = (context as MainActivity).userSearchViewModel,
+                navHostController = navHostController
+            )
         }
         composable(BonsaiBottomNavigationTag.UserCartScreen.name) {
             UserCartScreen(
@@ -58,7 +63,7 @@ fun BonsaiBottomNavHost(
                 navBottomHostController = navBottomHostController
             )
         }
-        composable(BonsaiBottomNavigationTag.UserBillScreen.name){
+        composable(BonsaiBottomNavigationTag.UserBillScreen.name) {
             UserBillScreen(
                 userBillViewModel = (context as MainActivity).userBillViewModel,
                 navHostController = navHostController,

@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
     val userBillViewModel:UserBillViewModel by viewModels()
     val userListTreeByTypeViewModel:UserListTreeByTypeViewModel by viewModels()
     val userTreeInfoViewModel:UserTreeInfoViewModel by viewModels()
+    val userSearchViewModel:UserSearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

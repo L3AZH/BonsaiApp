@@ -65,6 +65,12 @@ interface BonsaiApi {
         @Header(value = "Authorization") bearerToken: String
     ):Response<GetAllTreeResponse>
 
+    @GET(value = "tree/get-tree-by-name")
+    suspend fun getTreeByName(
+        @Header(value = "Authorization") bearerToken: String,
+        @Query(value = "nameTree") nameTree:String
+    ):Response<GetTreeByNameResponse>
+
     @GET(value = "tree/get-tree")
     suspend fun getTreeInfo(
         @Header(value = "Authorization") bearerToken: String,

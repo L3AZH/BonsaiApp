@@ -30,6 +30,24 @@ class TreeRepository @Inject constructor(private val bonsaiApi: BonsaiApi) {
         }
     }
 
+    suspend fun getTreeByName(
+        context: Context,
+        nameTree:String,
+        onSuccess: (GetTreeByNameResponse) -> Unit,
+        onError: (BonsaiErrorResponse) -> Unit
+    ) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = bonsaiApi.getTreeByName(SharePrefUtils.getBearerToken(context),nameTree)
+            if (response.isSuccessful) {
+                onSuccess(response.body()!!)
+            } else {
+                onError(BonsaiErrorResponse.convertFromErrorBody(response.errorBody()!!))
+            }
+        } catch (e: Exception) {
+            onError(BonsaiErrorResponse.convertFromException(e))
+        }
+    }
+
     suspend fun getTreeInfo(
         context: Context,
         uuidTree: String,
