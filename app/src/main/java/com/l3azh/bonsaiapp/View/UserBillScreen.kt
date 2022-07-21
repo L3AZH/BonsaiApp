@@ -1,7 +1,9 @@
 package com.l3azh.bonsaiapp.View
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -9,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.l3azh.bonsaiapp.Component.EmptyPageComponent
 import com.l3azh.bonsaiapp.Component.UserBillItemComponent
@@ -38,6 +41,9 @@ fun UserBillScreen(
                             navHostController.navigate("${BonsaiNavigationTag.BillDetailScreen.name}/${billState.uuidBill}")
                         }
                     )
+                }
+                item { 
+                    Spacer(modifier = Modifier.height(150.dp))
                 }
             }
         }
