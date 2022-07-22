@@ -102,6 +102,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+    //Chart
+    implementation 'io.github.bytebeats:compose-charts:0.1.2'
 }
 
 def readKeyFromLocalProperties(String keyName) {

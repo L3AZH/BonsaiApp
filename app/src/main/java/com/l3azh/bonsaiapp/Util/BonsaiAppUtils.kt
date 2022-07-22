@@ -41,6 +41,12 @@ class BonsaiAppUtils {
             return df.format(date)
         }
 
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getDateStringWithOutTime(date:Date): String {
+            val df = SimpleDateFormat("dd/MM/yyyy")
+            return df.format(date)
+        }
+
         @JvmStatic
         fun convertBitmapToStringData(bitmap: Bitmap): String {
             var byteArrayOutputStream = ByteArrayOutputStream()

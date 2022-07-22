@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +23,6 @@ import com.l3azh.bonsaiapp.Component.AppBarDeleteButton
 import com.l3azh.bonsaiapp.Component.AppBarSaveButton
 import com.l3azh.bonsaiapp.Dialog.InformDialog
 import com.l3azh.bonsaiapp.Dialog.LoadingDialog
-import com.l3azh.bonsaiapp.Model.TreeTypeState
 import com.l3azh.bonsaiapp.ViewModel.AdminTreeTypeDetailViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 
@@ -28,7 +30,7 @@ import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 fun AdminTreeTypeDetailScreen(
     adminTreeTypeDetailViewModel: AdminTreeTypeDetailViewModel,
     navHostController: NavHostController
-){
+) {
     val context = LocalContext.current
     Scaffold(
         modifier = Modifier.fillMaxSize(1f),
@@ -43,7 +45,12 @@ fun AdminTreeTypeDetailScreen(
                     navHostController.popBackStack()
                 })
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    AppBarDeleteButton {}
+                    AppBarDeleteButton {
+                        adminTreeTypeDetailViewModel.deleteTree(
+                            context,
+                            adminTreeTypeDetailViewModel.state.value.uuidTreeType.value
+                        )
+                    }
                     AppBarSaveButton(onClick = {
                         adminTreeTypeDetailViewModel.updateTreeType(context)
                     })
@@ -51,7 +58,7 @@ fun AdminTreeTypeDetailScreen(
             }
         }
     ) {
-        Box(modifier = Modifier.fillMaxSize(1f)){
+        Box(modifier = Modifier.fillMaxSize(1f)) {
             Column(
                 modifier = Modifier
                     .fillMaxSize(1f)
@@ -83,7 +90,7 @@ fun AdminTreeTypeDetailScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = adminTreeTypeDetailViewModel.state.value.name.value,
-                    onValueChange = { adminTreeTypeDetailViewModel.state.value.name.value = it},
+                    onValueChange = { adminTreeTypeDetailViewModel.state.value.name.value = it },
                     modifier = Modifier.fillMaxWidth(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     singleLine = false,
@@ -101,7 +108,9 @@ fun AdminTreeTypeDetailScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = adminTreeTypeDetailViewModel.state.value.description.value,
-                    onValueChange = {adminTreeTypeDetailViewModel.state.value.description.value = it },
+                    onValueChange = {
+                        adminTreeTypeDetailViewModel.state.value.description.value = it
+                    },
                     modifier = Modifier
                         .fillMaxWidth(1f)
                         .height(120.dp),
@@ -115,29 +124,44 @@ fun AdminTreeTypeDetailScreen(
         LoadingDialog(
             show = adminTreeTypeDetailViewModel.state.value.isLoading.value
         )
-        if(adminTreeTypeDetailViewModel.state.value.onError.value){
+        if (adminTreeTypeDetailViewModel.state.value.onError.value) {
             InformDialog(
                 show = true,
                 title = "Error",
                 message = adminTreeTypeDetailViewModel.state.value.errorMessage.value,
                 positiveButtonEnable = true,
                 namePositiveButton = "OK",
-                onPositiveClick = {dialogState ->
+                onPositiveClick = { dialogState ->
                     dialogState.value = false
                     adminTreeTypeDetailViewModel.state.value.onError.value = false
                 }
             )
         }
-        if(adminTreeTypeDetailViewModel.state.value.onUpdateSuccess.value){
+        if (adminTreeTypeDetailViewModel.state.value.onUpdateSuccess.value) {
             InformDialog(
                 show = true,
                 title = "Success",
                 message = "Update success !",
                 positiveButtonEnable = true,
                 namePositiveButton = "OK",
-                onPositiveClick = {dialogState ->
+                onPositiveClick = { dialogState ->
                     dialogState.value = false
                     adminTreeTypeDetailViewModel.state.value.onUpdateSuccess.value = false
+                }
+            )
+        }
+        if (adminTreeTypeDetailViewModel.state.value.onDeleted.value) {
+            InformDialog(
+                show = true,
+                title = "Success",
+                message = "Delete Tree Type success !",
+                positiveButtonEnable = true,
+                namePositiveButton = "OK",
+                onPositiveClick = { dialogState ->
+                    dialogState.value = false
+                    adminTreeTypeDetailViewModel.state.value.onDeleted.value = false
+                    adminTreeTypeDetailViewModel.resetSate()
+                    navHostController.popBackStack()
                 }
             )
         }
@@ -146,7 +170,7 @@ fun AdminTreeTypeDetailScreen(
 
 @Preview
 @Composable
-fun PreviewDetailTreeType(){
+fun PreviewDetailTreeType() {
     BonsaiAppTheme {
         //AdminTreeTypeDetailScreen()
     }

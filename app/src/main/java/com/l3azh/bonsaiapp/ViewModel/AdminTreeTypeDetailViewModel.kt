@@ -14,14 +14,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AdminTreeTypeDetailState(
-    var uuidTreeType:MutableState<String> = mutableStateOf(""),
+    var uuidTreeType: MutableState<String> = mutableStateOf(""),
     var name: MutableState<String> = mutableStateOf(""),
     var description: MutableState<String> = mutableStateOf(""),
-    var onUpdateSuccess:MutableState<Boolean> = mutableStateOf(false),
+    var onUpdateSuccess: MutableState<Boolean> = mutableStateOf(false),
     var onError: MutableState<Boolean> = mutableStateOf(false),
     var errorMessage: MutableState<String> = mutableStateOf(""),
-    var isLoading: MutableState<Boolean> = mutableStateOf(false)
-){
+    var isLoading: MutableState<Boolean> = mutableStateOf(false),
+    var onDeleted:MutableState<Boolean> = mutableStateOf(false)
+) {
 }
 
 @HiltViewModel
@@ -31,14 +32,17 @@ class AdminTreeTypeDetailViewModel @Inject constructor(
 
     var state = mutableStateOf(AdminTreeTypeDetailState())
 
-    fun initState(treeTypeDetailInfo: TreeTypeState){
-        state = mutableStateOf(AdminTreeTypeDetailState(
-            mutableStateOf(treeTypeDetailInfo.uuid),
-            mutableStateOf(treeTypeDetailInfo.name),
-            mutableStateOf(treeTypeDetailInfo.description)))
+    fun initState(treeTypeDetailInfo: TreeTypeState) {
+        state = mutableStateOf(
+            AdminTreeTypeDetailState(
+                mutableStateOf(treeTypeDetailInfo.uuid),
+                mutableStateOf(treeTypeDetailInfo.name),
+                mutableStateOf(treeTypeDetailInfo.description)
+            )
+        )
     }
 
-    fun resetSate(){
+    fun resetSate() {
         state = mutableStateOf(AdminTreeTypeDetailState())
     }
 
@@ -66,5 +70,27 @@ class AdminTreeTypeDetailViewModel @Inject constructor(
                     }
                 }
             )
+        }
+
+    fun deleteTree(context: Context, uuidTreeType: String) =
+        CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
+                state.value.isLoading.value = true
+            }
+            treeTypeRepository.deleteTreeType(
+                context, uuidTreeType,
+                onSuccess = {deleteTreeTypeResponse ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        state.value.isLoading.value = false
+                        state.value.onDeleted.value = true
+                    }
+                },
+                onError = {bonsaiErrorResponse ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        state.value.isLoading.value = false
+                        state.value.onError.value = true
+                        state.value.errorMessage.value = bonsaiErrorResponse.errorMessage
+                    }
+                })
         }
 }

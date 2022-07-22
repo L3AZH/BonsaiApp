@@ -52,7 +52,9 @@ fun AdminTreeDetailScreen(
                     navHostController.popBackStack()
                 })
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    AppBarDeleteButton {}
+                    AppBarDeleteButton {
+                        adminTreeDetailViewModel.deleteTree(context, uuidTree)
+                    }
                     AppBarSaveButton {
                         adminTreeDetailViewModel.updateTreeInfo(context, uuidTree)
                     }
@@ -212,7 +214,7 @@ fun AdminTreeDetailScreen(
                 }
             )
         }
-        if (adminTreeDetailViewModel.state.value.onUdpateSuccess.value) {
+        if (adminTreeDetailViewModel.state.value.onUpdateSuccess.value) {
             InformDialog(
                 show = true,
                 title = "Success",
@@ -221,11 +223,26 @@ fun AdminTreeDetailScreen(
                 namePositiveButton = "OK",
                 onPositiveClick = { dialogState ->
                     dialogState.value = false
-                    adminTreeDetailViewModel.state.value.onUdpateSuccess.value = false
+                    adminTreeDetailViewModel.state.value.onUpdateSuccess.value = false
                 },
                 onTapOutSideDialog = { dialogState ->
                     dialogState.value = false
-                    adminTreeDetailViewModel.state.value.onUdpateSuccess.value = false
+                    adminTreeDetailViewModel.state.value.onUpdateSuccess.value = false
+                }
+            )
+        }
+        if (adminTreeDetailViewModel.state.value.onDeleted.value) {
+            InformDialog(
+                show = true,
+                title = "Success",
+                message = "Delete Tree successful !",
+                positiveButtonEnable = true,
+                namePositiveButton = "OK",
+                onPositiveClick = { dialogState ->
+                    dialogState.value = false
+                    adminTreeDetailViewModel.state.value.onDeleted.value = false
+                    adminTreeDetailViewModel.resetState()
+                    navHostController.popBackStack()
                 }
             )
         }

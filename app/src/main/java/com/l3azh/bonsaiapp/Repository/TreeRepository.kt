@@ -32,12 +32,12 @@ class TreeRepository @Inject constructor(private val bonsaiApi: BonsaiApi) {
 
     suspend fun getTreeByName(
         context: Context,
-        nameTree:String,
+        nameTree: String,
         onSuccess: (GetTreeByNameResponse) -> Unit,
         onError: (BonsaiErrorResponse) -> Unit
     ) = CoroutineScope(Dispatchers.IO).launch {
         try {
-            val response = bonsaiApi.getTreeByName(SharePrefUtils.getBearerToken(context),nameTree)
+            val response = bonsaiApi.getTreeByName(SharePrefUtils.getBearerToken(context), nameTree)
             if (response.isSuccessful) {
                 onSuccess(response.body()!!)
             } else {
@@ -110,7 +110,10 @@ class TreeRepository @Inject constructor(private val bonsaiApi: BonsaiApi) {
     ) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val response =
-                bonsaiApi.getTreeGroupByTreeType(SharePrefUtils.getBearerToken(context), uuidTreeType)
+                bonsaiApi.getTreeGroupByTreeType(
+                    SharePrefUtils.getBearerToken(context),
+                    uuidTreeType
+                )
             if (response.isSuccessful) {
                 onSuccess(response.body()!!)
             } else {
@@ -138,6 +141,24 @@ class TreeRepository @Inject constructor(private val bonsaiApi: BonsaiApi) {
             }
         } catch (e: Exception) {
             onError(BonsaiErrorResponse.convertFromException(e))
+        }
+    }
+
+    suspend fun deleteTree(
+        context: Context,
+        uuidTree: String,
+        onSuccess: (DeleteTreeResponse) -> Unit,
+        onError: (BonsaiErrorResponse) -> Unit
+    ) {
+        try {
+            val response = bonsaiApi.deleteTree(SharePrefUtils.getBearerToken(context), uuidTree)
+            if (response.isSuccessful) {
+                onSuccess(response.body()!!)
+            } else {
+                onError(BonsaiErrorResponse.convertFromErrorBody(response.errorBody()!!))
+            }
+        } catch (e: Exception) {
+            onError(BonsaiErrorResponse.convertFromException(e));
         }
     }
 }

@@ -21,15 +21,27 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.l3azh.bonsaiapp.Component.InfoAccountComponent
 import com.l3azh.bonsaiapp.Component.ItemMenuComponent
-import com.l3azh.bonsaiapp.Dialog.ChoosePickOrCaptureImageDialog
 import com.l3azh.bonsaiapp.Dialog.InformDialog
 import com.l3azh.bonsaiapp.Dialog.LoadingDialog
 import com.l3azh.bonsaiapp.MainActivity
 import com.l3azh.bonsaiapp.Navigation.BonsaiNavigationTag
+import com.l3azh.bonsaiapp.Util.BonsaiAppUtils
 import com.l3azh.bonsaiapp.Util.SharePrefUtils
 import com.l3azh.bonsaiapp.ViewModel.AdminMainMenuViewModel
 import com.l3azh.bonsaiapp.ui.theme.BonsaiAppTheme
 import com.l3azh.bonsaiapp.ui.theme.Green
+import com.l3azh.bonsaiapp.ui.theme.GreenLight
+import me.bytebeats.views.charts.bar.BarChart
+import me.bytebeats.views.charts.bar.BarChartData
+import me.bytebeats.views.charts.bar.render.bar.SimpleBarDrawer
+import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
+import me.bytebeats.views.charts.line.LineChart
+import me.bytebeats.views.charts.line.LineChartData
+import me.bytebeats.views.charts.line.render.line.SolidLineDrawer
+import me.bytebeats.views.charts.line.render.point.FilledCircularPointDrawer
+import me.bytebeats.views.charts.line.render.xaxis.SimpleXAxisDrawer
+import me.bytebeats.views.charts.line.render.yaxis.SimpleYAxisDrawer
+import me.bytebeats.views.charts.simpleChartAnimation
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -42,7 +54,7 @@ fun AdminMainScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(1f),
         topBar = {
-            Text(
+            /*Text(
                 text = "Dash Board", style = MaterialTheme.typography.h1.copy(
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
@@ -50,7 +62,7 @@ fun AdminMainScreen(
                 ), modifier = Modifier
                     .fillMaxWidth(1f)
                     .padding(start = 15.dp, top = 10.dp)
-            )
+            )*/
         }
     ) {
         Box(
@@ -73,7 +85,8 @@ fun AdminMainScreen(
                 )
             }
             Column(
-                modifier = Modifier.fillMaxSize(1f)
+                modifier = Modifier
+                    .fillMaxSize(1f)
             ) {
                 InfoAccountComponent(
                     name = adminMainMenuViewModel.state.value.accountInfo.value.lastName,
@@ -84,6 +97,48 @@ fun AdminMainScreen(
                     onImageUpdate = {
                         navHostController!!.navigate(BonsaiNavigationTag.InfoAccountScreen.name)
                     })
+                if (adminMainMenuViewModel.state.value.listTreeOrderQuantity.value.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    BarChart(
+                        barChartData = BarChartData(
+                            bars = adminMainMenuViewModel.state.value.listTreeOrderQuantity.value.map { statisticTreeOrderQuantity ->
+                                BarChartData.Bar(
+                                    value = statisticTreeOrderQuantity.quantity.toFloat(),
+                                    label = statisticTreeOrderQuantity.nameTree,
+                                    color = GreenLight
+                                )
+                            }.toList()
+                        ),
+                        // Optional properties.
+                        modifier = Modifier.fillMaxWidth(1f).padding(horizontal = 50.dp).height(100.dp),
+                        animation = simpleChartAnimation(),
+                        barDrawer = SimpleBarDrawer(),
+                        xAxisDrawer = me.bytebeats.views.charts.bar.render.xaxis.SimpleXAxisDrawer(),
+                        yAxisDrawer = me.bytebeats.views.charts.bar.render.yaxis.SimpleYAxisDrawer(),
+                        labelDrawer = SimpleLabelDrawer()
+                    )
+                }
+                if (adminMainMenuViewModel.state.value.listTotalBill.value.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(50.dp))
+                    LineChart(
+                        lineChartData = LineChartData(
+                            points = adminMainMenuViewModel.state.value.listTotalBill.value.map { statisticTotalBillState ->
+                                LineChartData.Point(
+                                    statisticTotalBillState.total.toFloat(),
+                                    BonsaiAppUtils.getDateStringWithOutTime(statisticTotalBillState.time)
+                                )
+                            }.toList()
+                        ),
+                        // Optional properties.
+                        modifier = Modifier.fillMaxWidth(1f).padding(horizontal = 50.dp).height(100.dp),
+                        animation = simpleChartAnimation(),
+                        pointDrawer = FilledCircularPointDrawer(),
+                        lineDrawer = SolidLineDrawer(),
+                        xAxisDrawer = SimpleXAxisDrawer(),
+                        yAxisDrawer = SimpleYAxisDrawer(),
+                        horizontalOffset = 5f
+                    )
+                }
                 LazyVerticalGrid(
                     cells = GridCells.Fixed(2),
                     modifier = Modifier.padding(32.dp)
@@ -122,6 +177,8 @@ fun AdminMainScreen(
     }
     LaunchedEffect(key1 = true) {
         adminMainMenuViewModel.initData(context, SharePrefUtils.getEmail(context))
+        adminMainMenuViewModel.getTotalBill(context)
+        adminMainMenuViewModel.getTreeOrderQuantity(context)
     }
 }
 

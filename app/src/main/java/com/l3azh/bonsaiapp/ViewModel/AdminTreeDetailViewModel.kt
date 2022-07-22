@@ -29,7 +29,8 @@ class AdminTreeDetailState(
     var onPickAndCaptureImage: MutableState<Boolean> = mutableStateOf(false),
     var errorMessage: MutableState<String> = mutableStateOf(""),
     var onError: MutableState<Boolean> = mutableStateOf(false),
-    var onUdpateSuccess: MutableState<Boolean> = mutableStateOf(false)
+    var onUpdateSuccess: MutableState<Boolean> = mutableStateOf(false),
+    var onDeleted:MutableState<Boolean> = mutableStateOf(false)
 ) {
     fun openDialogPickAndCaptureImage() {
         onPickAndCaptureImage.value = true
@@ -151,10 +152,32 @@ class AdminTreeDetailViewModel @Inject constructor(
                     CoroutineScope(Dispatchers.Main).launch {
                         state.value.isLoading.value = false
                         state.value.onError.value = false
-                        state.value.onUdpateSuccess.value = true
+                        state.value.onUpdateSuccess.value = true
                     }
                 },
                 onError = { bonsaiErrorResponse ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        state.value.isLoading.value = false
+                        state.value.onError.value = true
+                        state.value.errorMessage.value = bonsaiErrorResponse.errorMessage
+                    }
+                })
+        }
+
+    fun deleteTree(context: Context, uuidTree: String) =
+        CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
+                state.value.isLoading.value = true
+            }
+            treeRepository.deleteTree(
+                context, uuidTree,
+                onSuccess = { deleteTreeResponse ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        state.value.isLoading.value = false
+                        state.value.onDeleted.value = true
+                    }
+                },
+                onError = {bonsaiErrorResponse ->
                     CoroutineScope(Dispatchers.Main).launch {
                         state.value.isLoading.value = false
                         state.value.onError.value = true
