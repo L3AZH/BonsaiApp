@@ -8,8 +8,8 @@ spring.servlet.multipart.max-file-size=30MB
 spring.servlet.multipart.max-request-size=100MB
 
 #Basic Auth configuration
-basic.auth.name=l3azh
-basic.auth.password=221199
+basic.auth.name=yourname
+basic.auth.password=yourpass
 
 #Database configuration
 spring.datasource.drive-class-name=com.mysql.cj.jdbc.Driver
